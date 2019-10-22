@@ -21,6 +21,7 @@ export const doLogIn = (user, history) => dispatch => {
   axios
     .post(`${appURL}/auth/login`, user)
     .then(response => {
+      debugger
       const { token, userId } = response.data;
       dispatch(genericAction(LOGIN, userId));
       localStorage.setItem("token", token);
@@ -28,6 +29,7 @@ export const doLogIn = (user, history) => dispatch => {
       history.push("/workouts");
     })
     .catch(error => {
+      debugger
       let { errorMessage } = error.response.data;
       dispatch(genericAction(LOGIN_ERROR, errorMessage));
     })
@@ -39,6 +41,7 @@ export const doSignUp = (user, history) => dispatch => {
   axios
     .post(`${appURL}/auth/signup`, user)
     .then(response => {
+      debugger
       const { token, user } = response.data;
       dispatch(genericAction(LOGIN, user.id));
       localStorage.setItem("token", token);
@@ -46,6 +49,7 @@ export const doSignUp = (user, history) => dispatch => {
       history.push("/workouts");
     })
     .catch(error => {
+      debugger
       let { errorMessage } = error.response.data;
       dispatch(genericAction(SIGNUP_ERROR, errorMessage));
     })
