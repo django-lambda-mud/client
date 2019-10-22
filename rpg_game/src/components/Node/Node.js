@@ -56,12 +56,9 @@ class Node extends React.Component {
       <td className="node" id={`${i} ${j}`}>
         {start ? (
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+          className="node-child"  
+          style={{              
               backgroundImage: `url('${character}')`,
-              backgroundPosition: "0 0",
               width: `45px`,
               height: `49px`
             }}
@@ -69,84 +66,63 @@ class Node extends React.Component {
         ) : // FOR FOREST
         treeOne ? (
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+          className="node-child"  
+          style={{              
               backgroundImage: `url('${tree1}')`,
-              backgroundPosition: "0 0",
               width: `60px`,
               height: `50px`
             }}
           />
         ) : treeTwo ? (
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+          className="node-child"  
+          style={{              
               backgroundImage: `url('${tree2}')`,
-              backgroundPosition: "0 0",
               width: `60px`,
               height: `50px`
             }}
           />
         ) : treeThree ? (
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+          className="node-child"  
+          style={{              
               backgroundImage: `url('${tree3}')`,
-              backgroundPosition: "0 0",
               width: `60px`,
               height: `50px`
             }}
           />
         ) : grave ? (
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+          className="node-child"  
+          style={{              
               backgroundImage: `url('${grave1}')`,
-              backgroundPosition: "0 0",
               width: `35px`,
               height: `40px`
             }}
           />
         ) : goldOne ? (
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+          className="node-child"  
+          style={{              
               backgroundImage: `url('${gold1}')`,
-              backgroundPosition: "0 0",
               width: `70px`,
               height: `63px`
             }}
           />
         ) : toStreet ? (
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+          className="node-child"  
+          style={{              
               backgroundImage: `url('${exitTheStreet}')`,
-              backgroundPosition: "0 0",
               width: `90px`,
               height: `90px`
             }}
           />
         ) : toHouse ? (
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+          className="node-child"  
+          style={{              
               backgroundImage: `url('${doorOne}')`,
-              backgroundPosition: "0 0",
               width: `36px`,
               height: `55px`
             }}
@@ -154,36 +130,27 @@ class Node extends React.Component {
         ) : // FOR STREET
         goldStatue ? (
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+          className="node-child"  
+          style={{              
               backgroundImage: `url('${goldStatueOne}')`,
-              backgroundPosition: "0 0",
               width: `40px`,
               height: `65px`
             }}
           />
         ) : skeleton ? (
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+          className="node-child"  
+          style={{              
               backgroundImage: `url('${skeletonOne}')`,
-              backgroundPosition: "0 0",
               width: `60px`,
               height: `35px`
             }}
           />
         ) : toForest ? (
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+          className="node-child"  
+          style={{              
               backgroundImage: `url('${exitForest}')`,
-              backgroundPosition: "0 0",
               width: `35px`,
               height: `40px`
             }}
@@ -191,72 +158,54 @@ class Node extends React.Component {
         ) : // FOR HOUSE
         carpet ? (
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+          className="node-child"  
+          style={{              
               backgroundImage: `url('${carpetOne}')`,
-              backgroundPosition: "0 0",
               width: `30px`,
               height: `40px`
             }}
           />
         ) : chair ? (
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+          className="node-child"  
+          style={{              
               backgroundImage: `url('${chairOne}')`,
-              backgroundPosition: "0 0",
               width: `28px`,
               height: `40px`
             }}
           />
         ) : smallCabinet ? (
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+          className="node-child"  
+          style={{              
               backgroundImage: `url('${cabinetOne}')`,
-              backgroundPosition: "0 0",
               width: `40px`,
               height: `40px`
             }}
           />
         ) : mediumCabinet ? (
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+          className="node-child"  
+          style={{              
               backgroundImage: `url('${cabinetTwo}')`,
-              backgroundPosition: "0 0",
               width: `40px`,
               height: `65px`
             }}
           />
         ) : bigCabinet ? (
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+          className="node-child"  
+          style={{              
               backgroundImage: `url('${cabinetThree}')`,
-              backgroundPosition: "0 0",
               width: `95px`,
               height: `95px`
             }}
           />
         ) :  toGraveyard ? (
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+          className="node-child"  
+          style={{              
               backgroundImage: `url('${exitGraveyard}')`,
-              backgroundPosition: "0 0",
               width: `180px`,
               height: `165px`
             }}
@@ -264,46 +213,35 @@ class Node extends React.Component {
         ) : // GRAVEYARD
         fence ? (
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+          className="node-child"  
+          style={{              
               backgroundImage: `url('${fenceOne}')`,
-              backgroundPosition: "0 0",
               width: `100px`,
               height: `50px`
             }}
           />
         ) : darkTree ? (
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+          className="node-child"  
+          style={{              
               backgroundImage: `url('${tree4}')`,
-              backgroundPosition: "0 0",
               width: `50px`,
               height: `100px`
             }}
           />
         ) : exitStreet ? (
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+          className="node-child"  
+          style={{              
               backgroundImage: `url('${exitToStreet}')`,
-              backgroundPosition: "0 0",
               width: `48px`,
               height: `100px`
             }}
           />
         ) : (
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+          className="node-child"  
+          style={{              
               width: `40px`,
               height: `40px`
             }}

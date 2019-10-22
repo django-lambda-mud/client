@@ -13,7 +13,7 @@ import {
   makeStreetGrid,
   makeForestGrid,
   makeHouseGrid,
-  makeGraveyardGrid,
+  makeGraveyardGrid
 } from "../../store/actions/gridActions";
 import characterOne from "../Node/images/character_one.png";
 import characterTwo from "../Node/images/character_two.png";
@@ -31,6 +31,13 @@ const StyledMainGame = styled.div`
   .node {
     width: 4rem;
     height: 4rem;
+  }
+
+  .node-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-position: 0 0;
   }
 `;
 
