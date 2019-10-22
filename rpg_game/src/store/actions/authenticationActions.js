@@ -17,6 +17,7 @@ export const genericAction = (type, payload) => ({
 });
 
 export const doLogIn = (user, history) => dispatch => {
+  debugger
   dispatch(genericAction(LOADING_USER, true));
   axios
     .post(`${appURL}/auth/login`, user)
@@ -36,17 +37,18 @@ export const doLogIn = (user, history) => dispatch => {
     .finally(() => dispatch(genericAction(LOADING_USER, false)));
 };
 
-export const doSignUp = (user, history) => dispatch => {
+export const doSignUp = (user) => dispatch => {
+  debugger
   dispatch(genericAction(LOADING_USER, true));
   axios
-    .post(`${appURL}/auth/signup`, user)
+    .post(`${appURL}/api/registration/`, {"username":"testuseree", "password1":"testpassword", "password2":"testpassword"})
     .then(response => {
       debugger
-      const { token, user } = response.data;
-      dispatch(genericAction(LOGIN, user.id));
-      localStorage.setItem("token", token);
-      localStorage.setItem("userId", user.id);
-      history.push("/workouts");
+      // const { token, user } = response.data;
+      // dispatch(genericAction(LOGIN, user.id));
+      // localStorage.setItem("token", token);
+      // localStorage.setItem("userId", user.id);
+      // history.push("/workouts");
     })
     .catch(error => {
       debugger
