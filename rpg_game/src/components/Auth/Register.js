@@ -38,9 +38,6 @@ class Register extends Component {
     return (
       <div className="log-reg">
         <div className="register">
-          <p onClick={this.showInput} className="btn btn--white btn--login">
-            Go to Login
-          </p>
           <div className="inputs">
             <input
               name="username"

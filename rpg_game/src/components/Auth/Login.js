@@ -30,9 +30,6 @@ class Login extends React.Component {
     return (
       <div className="login">
         <div className="login">
-          <p onClick={this.showInput} className="btn btn--white btn--register">
-            Register
-          </p>
 
           <div className="inputs">
             <input

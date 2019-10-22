@@ -23,9 +23,9 @@ export const doLogIn = (user ) => dispatch => {
     .post(`${appURL}/api/login`, user)
     .then(response => {
       debugger
-      const { token, userId } = response.data;
+      const { key, userId } = response.data;
       dispatch(genericAction(LOGIN, userId));
-      localStorage.setItem("token", token);
+      localStorage.setItem("token", key);
       localStorage.setItem("userId", userId);
     })
     .catch(error => {
@@ -45,7 +45,7 @@ export const doSignUp = (user) => dispatch => {
       debugger
       const { key, id } = response.data;
       dispatch(genericAction(LOGIN, user.id));
-      localStorage.setItem("token", token);
+      localStorage.setItem("token", key);
       localStorage.setItem("userId", user.id);
     })
     .catch(error => {
