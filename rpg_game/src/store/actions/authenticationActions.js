@@ -16,18 +16,17 @@ export const genericAction = (type, payload) => ({
   payload
 });
 
-export const doLogIn = (user, history) => dispatch => {
+export const doLogIn = (user ) => dispatch => {
   debugger
   dispatch(genericAction(LOADING_USER, true));
   axios
-    .post(`${appURL}/auth/login`, user)
+    .post(`${appURL}/api/login`, user)
     .then(response => {
       debugger
       const { token, userId } = response.data;
       dispatch(genericAction(LOGIN, userId));
       localStorage.setItem("token", token);
       localStorage.setItem("userId", userId);
-      history.push("/workouts");
     })
     .catch(error => {
       debugger
@@ -41,14 +40,13 @@ export const doSignUp = (user) => dispatch => {
   debugger
   dispatch(genericAction(LOADING_USER, true));
   axios
-    .post(`${appURL}/api/registration/`, {"username":"testuseree", "password1":"testpassword", "password2":"testpassword"})
+    .post(`${appURL}/api/registration/`, user)
     .then(response => {
       debugger
-      // const { token, user } = response.data;
-      // dispatch(genericAction(LOGIN, user.id));
-      // localStorage.setItem("token", token);
-      // localStorage.setItem("userId", user.id);
-      // history.push("/workouts");
+      const { key, id } = response.data;
+      dispatch(genericAction(LOGIN, user.id));
+      localStorage.setItem("token", token);
+      localStorage.setItem("userId", user.id);
     })
     .catch(error => {
       debugger
