@@ -6,7 +6,7 @@ import tree2 from "./images/tree_two.png";
 import tree3 from "./images/tree_three.png";
 import grave1 from "./images/grave.png";
 import gold1 from "./images/gold_one.png";
-import exitStreet from "./images/toStreet.png";
+import exitTheStreet from "./images/toStreet.png";
 import doorOne from "./images/door.png";
 // STREET
 import goldStatueOne from "./images/goldStatue.png";
@@ -133,7 +133,7 @@ class Node extends React.Component {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              backgroundImage: `url('${exitStreet}')`,
+              backgroundImage: `url('${exitTheStreet}')`,
               backgroundPosition: "0 0",
               width: `90px`,
               height: `90px`
