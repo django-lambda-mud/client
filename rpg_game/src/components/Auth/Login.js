@@ -2,7 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import { doLogIn } from "../../store/actions/authenticationActions";
 import {Link } from "react-router-dom";
-
+import img from '../../assets/clouds-dark-lightning-1118869.jpg'
+import logo from '../../assets/M.svg'
+import styled from 'styled-components'
 
 class Login extends React.Component {
   constructor(props) {
@@ -30,9 +32,9 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div className="login">
+      <LoginWrapper>
         <div className="login">
-
+          {/* <img src={logo}></img> */}
           <div className="inputs">
             <input
               name="username"
@@ -48,23 +50,71 @@ class Login extends React.Component {
               value={this.state.password}
               placeholder="Password"
             />
+            <button onClick={this.login}>Resume Game</button>
           </div>
-          <p className="btn btn--white" onClick={this.login}>
-            Login
-            {/* {this.props.loadingUser ? (<Loader
-               type="ThreeDots"
-               color="#1f2a38"
-               height="12"
-               width="26" />) :
-               (<i className="fa fa-user-plus"></i>)} */}
-          </p>
         </div>
-        <p>Dont have an Account ?</p>
-        <Link to="/register">Register</Link>
-      </div>
+        {/* <p>Dont have an Account ?</p>
+        <Link to="/register">Register</Link> */}
+      </LoginWrapper>
     );
   }
 }
+
+const LoginWrapper = styled.div`
+  background-image: url(${img});
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+
+  .login {
+    img {
+      margin: auto;
+      width: 3%;
+    }
+    .inputs {
+      display: flex;
+      flex-direction: column;
+      // align-items: center;
+      margin: 20% auto;
+      width: 50%;
+      color: white;
+
+      input {
+        margin: auto;
+        width: 50%;
+        margin-top: 1.0rem;
+        border: none;
+        background-color: #f6ac8266;
+        padding: 12px;
+        color: #d6cace;
+        font-size: 13px;
+        padding-left: 20px;
+        font-weight: bold;
+
+        ::placeholder {
+          color: #d6cace;
+          font-weight: bold;
+        }
+      }
+
+      button {
+        margin: auto;
+        width: 40%;
+        margin-top: 80px;
+        border: none;
+        border-radius: 50px;
+        background-color: #18061d
+        padding: 15px;
+        font-size: 13px;
+        color: #d6cace;
+        font-weight: bold;
+        cursor: pointer;
+      }
+    }
+  }
+`;
 
 const mapStateToProps = state => {
   return {
