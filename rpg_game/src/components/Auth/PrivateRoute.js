@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, withRouter } from 'react-router-dom';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
        return <Route
@@ -8,7 +8,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
                      if (localStorage.getItem('token')) {
                             return <Component />;
                      } else {
-                            return <Redirect to="/login" />
+                            return <Redirect to="/" />
                      }
               }} />;
 }

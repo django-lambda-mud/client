@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { doLogIn } from "../../store/actions/authenticationActions";
+import {Link } from "react-router-dom";
 
 class Login extends React.Component {
   constructor(props) {
@@ -23,7 +24,7 @@ class Login extends React.Component {
       password: this.state.password
     };
 
-    this.props.doLogIn(credentials);
+    this.props.doLogIn(credentials, this.props.history);
   };
 
   render() {
@@ -57,6 +58,8 @@ class Login extends React.Component {
                (<i className="fa fa-user-plus"></i>)} */}
           </p>
         </div>
+        <p>Dont have an Account ?</p>
+        <Link to="/register">Register</Link>
       </div>
     );
   }

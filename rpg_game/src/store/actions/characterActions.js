@@ -6,6 +6,7 @@ export const genericAction = (type, payload) => ({
 });
 
 export const chooseCharacter = (character, history) => {
+  debugger
   history.push("/game");
   return genericAction(CHOOSE_CHARACTER, character);
 };

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { axiosWithAuth } from "../axiosWithAuth";
 
-const appURL = "https://lambda-mud-test.herokuapp.com";
+const appURL = "http://127.0.0.1:8000";
 
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
@@ -16,17 +16,18 @@ export const genericAction = (type, payload) => ({
   payload
 });
 
-export const doLogIn = (user ) => dispatch => {
+export const doLogIn = (user, history ) => dispatch => {
   debugger
   dispatch(genericAction(LOADING_USER, true));
   axios
-    .post(`${appURL}/api/login`, user)
+    .post(`${appURL}/api/login/`, user)
     .then(response => {
       debugger
       const { key } = response.data;
       // dispatch(genericAction(LOGIN, userId));
       localStorage.setItem("token", key);
       // localStorage.setItem("userId", userId);
+      history.push("/character")
     })
     .catch(error => {
       debugger
@@ -36,7 +37,7 @@ export const doLogIn = (user ) => dispatch => {
     .finally(() => dispatch(genericAction(LOADING_USER, false)));
 };
 
-export const doSignUp = (user) => dispatch => {
+export const doSignUp = (user, history) => dispatch => {
   debugger
   dispatch(genericAction(LOADING_USER, true));
   axios
@@ -47,6 +48,7 @@ export const doSignUp = (user) => dispatch => {
       // dispatch(genericAction(LOGIN, user.id));
       localStorage.setItem("token", key);
       // localStorage.setItem("userId", user.id);
+      history.push("/character")
     })
     .catch(error => {
       debugger
@@ -56,20 +58,20 @@ export const doSignUp = (user) => dispatch => {
     .finally(() => dispatch(genericAction(LOADING_USER, false)));
 };
 
-export const doLogOut = () => dispach => {
-  localStorage.removeItem("token");
-  dispach(genericAction(LOGOUT));
-};
+// export const doLogOut = () => dispach => {
+//   localStorage.removeItem("token");
+//   dispach(genericAction(LOGOUT));
+// };
 
-export const doGetUser = () => dispatch => {
-  dispatch(genericAction(LOADING_USER, true));
-  axiosWithAuth()
-    .get(`${appURL}/profile`)
-    .then(response => {
-      dispatch(genericAction(GET_USER, response.data));
-    })
-    .catch(error =>
-      dispatch(genericAction(USER_ERROR, error.response.data.errorMessage))
-    )
-    .finally(() => dispatch(genericAction(LOADING_USER, false)));
-};
+// export const doGetUser = () => dispatch => {
+//   dispatch(genericAction(LOADING_USER, true));
+//   axiosWithAuth()
+//     .get(`${appURL}/profile`)
+//     .then(response => {
+//       dispatch(genericAction(GET_USER, response.data));
+//     })
+//     .catch(error =>
+//       dispatch(genericAction(USER_ERROR, error.response.data.errorMessage))
+//     )
+//     .finally(() => dispatch(genericAction(LOADING_USER, false)));
+// };

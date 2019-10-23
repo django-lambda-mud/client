@@ -26,7 +26,7 @@ class Register extends React.Component {
         password2: this.state.password2
       };
 
-      this.props.doSignUp(credentials);
+      this.props.doSignUp(credentials, this.props.history);
 
       this.setState({
         password1: null,

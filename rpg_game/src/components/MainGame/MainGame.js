@@ -53,7 +53,6 @@ class MainGame extends React.Component {
   };
 
   handleKeyDown = e => {
-    console.log(this.props.playerPosition);
     switch (e.keyCode) {
       case 40:
         // down
@@ -74,7 +73,8 @@ class MainGame extends React.Component {
           //   this.createStreet();
           // }
           if (
-            this.props.playerPosition.neighbors.includes(positionDown) &&
+            this.props.playerPosition.s_to !== 0
+             &&
             !positionDown.treeOne &&
             !positionDown.treeTwo &&
             !positionDown.treeThree
@@ -84,7 +84,7 @@ class MainGame extends React.Component {
               this.props.playerPosition.i + 1,
               this.props.playerPosition.j
             );
-            this.props.moveThePlayer(newGrid, positionDown);
+            this.props.moveThePlayer(newGrid, positionDown, "s");
           }
           return;
         }
@@ -92,12 +92,14 @@ class MainGame extends React.Component {
       case 37:
         // left
         if (this.props.playerPosition.j !== 0) {
-          const positionLeft = this.props.grid[this.props.playerPosition.i][this.props.playerPosition.j - 1];
+          const positionLeft = this.props.grid[this.props.playerPosition.i][
+            this.props.playerPosition.j - 1
+          ];
           // if (positionLeft.toForest) {
           //   this.createForest();
           // }
           if (
-            this.props.playerPosition.neighbors.includes(positionLeft) &&
+            this.props.playerPosition.w_to !== 0 && // .neighbors.includes(positionLeft) was old code
             !positionLeft.treeOne &&
             !positionLeft.treeTwo &&
             !positionLeft.treeThree
@@ -107,7 +109,7 @@ class MainGame extends React.Component {
               this.props.playerPosition.i,
               this.props.playerPosition.j - 1
             );
-            this.props.moveThePlayer(newGrid, positionLeft);
+            this.props.moveThePlayer(newGrid, positionLeft, "w");
           }
           return;
         }
@@ -115,7 +117,9 @@ class MainGame extends React.Component {
       case 39:
         // right
         if (this.props.playerPosition.j + 1 !== cols) {
-          const positionRight = this.props.grid[this.props.playerPosition.i][this.props.playerPosition.j + 1];
+          const positionRight = this.props.grid[this.props.playerPosition.i][
+            this.props.playerPosition.j + 1
+          ];
           // if (positionRight.toForest) {
           //   this.createForest();
           // }
@@ -126,7 +130,7 @@ class MainGame extends React.Component {
           //   this.createGraveyard();
           // }
           if (
-            this.props.playerPosition.neighbors.includes(positionRight) &&
+            this.props.playerPosition.e_to !== 0 &&
             !positionRight.treeOne &&
             !positionRight.treeTwo &&
             !positionRight.treeThree
@@ -136,7 +140,7 @@ class MainGame extends React.Component {
               this.props.playerPosition.i,
               this.props.playerPosition.j + 1
             );
-            this.props.moveThePlayer(newGrid, positionRight);
+            this.props.moveThePlayer(newGrid, positionRight, "e");
           }
           return;
         }
@@ -144,12 +148,14 @@ class MainGame extends React.Component {
       case 38:
         // up
         if (this.props.playerPosition.i !== 0) {
-          const positionUp = this.props.grid[this.props.playerPosition.i - 1][this.props.playerPosition.j];
+          const positionUp = this.props.grid[this.props.playerPosition.i - 1][
+            this.props.playerPosition.j
+          ];
           // if (positionUp.toStreet) {
           //   this.createStreet();
           // }
           if (
-            this.props.playerPosition.neighbors.includes(positionUp) &&
+            this.props.playerPosition.n_to !== 0 &&
             !positionUp.treeOne &&
             !positionUp.treeTwo &&
             !positionUp.treeThree
@@ -159,7 +165,7 @@ class MainGame extends React.Component {
               this.props.playerPosition.i - 1,
               this.props.playerPosition.j
             );
-            this.props.moveThePlayer(newGrid, positionUp);
+            this.props.moveThePlayer(newGrid, positionUp, "n");
           }
           return;
         }
@@ -199,7 +205,9 @@ class MainGame extends React.Component {
   };
 
   movePlayer = (grid, i, j) => {
-    grid[this.props.playerPosition.i][this.props.playerPosition.j].start = false;
+    grid[this.props.playerPosition.i][
+      this.props.playerPosition.j
+    ].start = false;
     grid[i][j].start = true;
     return grid;
   };
@@ -289,6 +297,6 @@ export default connect(
 )(MainGame);
 
 const rows = 10;
-const cols = 15;
+const cols = 10;
 let playerPosition;
 let grid;
