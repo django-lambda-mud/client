@@ -40,7 +40,7 @@ const StyledMainGame = styled.div`
 
 class MainGame extends React.Component {
   componentDidMount = () => {
-    this.createForest();
+    this.createForest("startOfGame");
 
     window.addEventListener("keydown", e => {
       this.handleKeyDown(e);

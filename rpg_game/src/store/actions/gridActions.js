@@ -17,15 +17,17 @@ export const genericAction = (type, payload, roomTitle, playerPosition) => ({
 
 const url = "http://127.0.0.1:8000/api/adv";
 
-export const makeForestGrid = () => dispatch =>  {
-  axiosWithAuth().get(`${url}/init/`).then(res => {
-     
+export const makeForestGrid = (startOfGame) => dispatch =>  {
+  if(startOfGame) { // we must check if the game starts and initialize else we make normal get request
+    axiosWithAuth().get(`${url}/init/`).then(res => {
+      dispatch(genericAction(MAKE_FOREST_GRID, res.data.rooms));
+    });
+  }
 
    return axios.get(`${url}/rooms/`).then(res => {
        
       dispatch(genericAction(MAKE_FOREST_GRID, res.data.rooms))
     })
-  })
   
   // return genericAction(MAKE_FOREST_GRID, forestGrid);
 };
