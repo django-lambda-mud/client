@@ -171,12 +171,12 @@ h6 {
 
 a,
 span,
-p,
-input {
+p {
   font-family: 'Overpass', sans-serif;
   font-weight: 300;
   font-size: 1.8rem;
   line-height: 1.5;
+  color: white;
 }
 
 a {
