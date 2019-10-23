@@ -23,10 +23,10 @@ export const doLogIn = (user ) => dispatch => {
     .post(`${appURL}/api/login`, user)
     .then(response => {
       debugger
-      const { key, userId } = response.data;
-      dispatch(genericAction(LOGIN, userId));
+      const { key } = response.data;
+      // dispatch(genericAction(LOGIN, userId));
       localStorage.setItem("token", key);
-      localStorage.setItem("userId", userId);
+      // localStorage.setItem("userId", userId);
     })
     .catch(error => {
       debugger
@@ -43,10 +43,10 @@ export const doSignUp = (user) => dispatch => {
     .post(`${appURL}/api/registration/`, user)
     .then(response => {
       debugger
-      const { key, id } = response.data;
-      dispatch(genericAction(LOGIN, user.id));
+      const { key } = response.data;
+      // dispatch(genericAction(LOGIN, user.id));
       localStorage.setItem("token", key);
-      localStorage.setItem("userId", user.id);
+      // localStorage.setItem("userId", user.id);
     })
     .catch(error => {
       debugger

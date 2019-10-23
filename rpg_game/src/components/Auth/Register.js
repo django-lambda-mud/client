@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { doSignUp } from "../../store/actions/authenticationActions";
 
-class Register extends Component {
+class Register extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,19 +19,21 @@ class Register extends Component {
   };
 
   register = () => {
-    const credentials = {
-      username: this.state.username,
-      password1: this.state.password1,
-      password2: this.state.password2
-    };
+    if (this.state.username && this.state.password1 && this.state.password2) {
+      const credentials = {
+        username: this.state.username,
+        password1: this.state.password1,
+        password2: this.state.password2
+      };
 
-    this.props.doSignUp(credentials);
+      this.props.doSignUp(credentials);
 
-    this.setState({
-      password1: null,
-      password2: null,
-      username: null
-    });
+      this.setState({
+        password1: null,
+        password2: null,
+        username: null
+      });
+    }
   };
 
   render() {
@@ -47,11 +49,18 @@ class Register extends Component {
               type="text"
             />
             <input
-              name="password"
+              name="password1"
               type="password"
               onChange={this.handleChange}
-              value={this.state.password}
-              placeholder="Password"
+              value={this.state.password1}
+              placeholder="Password One"
+            />
+            <input
+              name="password2"
+              type="password"
+              onChange={this.handleChange}
+              value={this.state.password2}
+              placeholder="Password Two"
             />
           </div>
 

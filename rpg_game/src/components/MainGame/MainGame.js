@@ -13,7 +13,8 @@ import {
   makeStreetGrid,
   makeForestGrid,
   makeHouseGrid,
-  makeGraveyardGrid
+  makeGraveyardGrid,
+  moveThePlayer
 } from "../../store/actions/gridActions";
 import characterOne from "../Node/images/character_one.png";
 import characterTwo from "../Node/images/character_two.png";
@@ -43,7 +44,8 @@ const StyledMainGame = styled.div`
 
 class MainGame extends React.Component {
   componentDidMount = () => {
-    this.createForest([]);
+    // this.props.makeForestGrid();
+    this.createForest();
 
     window.addEventListener("keydown", e => {
       this.handleKeyDown(e);
@@ -51,118 +53,113 @@ class MainGame extends React.Component {
   };
 
   handleKeyDown = e => {
+    console.log(this.props.playerPosition);
     switch (e.keyCode) {
       case 40:
         // down
-        if (playerPosition.i + 1 !== rows) {
-          const positionDown = grid[playerPosition.i + 1][playerPosition.j];
-          if (positionDown.toForest) {
-            this.createForest();
-          }
-          if (positionDown.toHouse) {
-            this.createHouse();
-          }
-          if (positionDown.toGraveyard) {
-            this.createGraveyard();
-          }
-          if (positionDown.exitStreet) {
-            this.createStreet();
-          }
+        if (this.props.playerPosition.i + 1 !== rows) {
+          const positionDown = this.props.grid[this.props.playerPosition.i + 1][
+            this.props.playerPosition.j
+          ];
+          // if (positionDown.toForest) {
+          //   this.createForest();
+          // }
+          // if (positionDown.toHouse) {
+          //   this.createHouse();
+          // }
+          // if (positionDown.toGraveyard) {
+          //   this.createGraveyard();
+          // }
+          // if (positionDown.exitStreet) {
+          //   this.createStreet();
+          // }
           if (
-            playerPosition.neighbors.includes(positionDown) &&
+            this.props.playerPosition.neighbors.includes(positionDown) &&
             !positionDown.treeOne &&
             !positionDown.treeTwo &&
             !positionDown.treeThree
           ) {
-            const newGrid = movePlayer(
+            const newGrid = this.movePlayer(
               this.props.grid,
-              playerPosition.i + 1,
-              playerPosition.j
+              this.props.playerPosition.i + 1,
+              this.props.playerPosition.j
             );
-            this.setState({
-              grid: newGrid
-            });
+            this.props.moveThePlayer(newGrid, positionDown);
           }
           return;
         }
         return;
       case 37:
         // left
-        if (playerPosition.j !== 0) {
-          const positionLeft = grid[playerPosition.i][playerPosition.j - 1];
-          if (positionLeft.toForest) {
-            this.createForest();
-          }
+        if (this.props.playerPosition.j !== 0) {
+          const positionLeft = this.props.grid[this.props.playerPosition.i][this.props.playerPosition.j - 1];
+          // if (positionLeft.toForest) {
+          //   this.createForest();
+          // }
           if (
-            playerPosition.neighbors.includes(positionLeft) &&
+            this.props.playerPosition.neighbors.includes(positionLeft) &&
             !positionLeft.treeOne &&
             !positionLeft.treeTwo &&
             !positionLeft.treeThree
           ) {
-            const newGrid = movePlayer(
+            const newGrid = this.movePlayer(
               this.props.grid,
-              playerPosition.i,
-              playerPosition.j - 1
+              this.props.playerPosition.i,
+              this.props.playerPosition.j - 1
             );
-            this.setState({
-              grid: newGrid
-            });
+            this.props.moveThePlayer(newGrid, positionLeft);
           }
           return;
         }
         return;
       case 39:
         // right
-        if (playerPosition.j + 1 !== cols) {
-          const positionRight = grid[playerPosition.i][playerPosition.j + 1];
-          if (positionRight.toForest) {
-            this.createForest();
-          }
-          if (positionRight.toStreet) {
-            this.createStreet();
-          }
-          if (positionRight.toGraveyard) {
-            this.createGraveyard();
-          }
+        if (this.props.playerPosition.j + 1 !== cols) {
+          const positionRight = this.props.grid[this.props.playerPosition.i][this.props.playerPosition.j + 1];
+          // if (positionRight.toForest) {
+          //   this.createForest();
+          // }
+          // if (positionRight.toStreet) {
+          //   this.createStreet();
+          // }
+          // if (positionRight.toGraveyard) {
+          //   this.createGraveyard();
+          // }
           if (
-            playerPosition.neighbors.includes(positionRight) &&
+            this.props.playerPosition.neighbors.includes(positionRight) &&
             !positionRight.treeOne &&
             !positionRight.treeTwo &&
             !positionRight.treeThree
           ) {
-            const newGrid = movePlayer(
+            const newGrid = this.movePlayer(
               this.props.grid,
-              playerPosition.i,
-              playerPosition.j + 1
+              this.props.playerPosition.i,
+              this.props.playerPosition.j + 1
             );
-            this.setState({
-              grid: newGrid
-            });
+            this.props.moveThePlayer(newGrid, positionRight);
           }
           return;
         }
         return;
       case 38:
         // up
-        if (playerPosition.i !== 0) {
-          const positionUp = grid[playerPosition.i - 1][playerPosition.j];
-          if (positionUp.toStreet) {
-            this.createStreet();
-          }
+        if (this.props.playerPosition.i !== 0) {
+          const positionUp = this.props.grid[this.props.playerPosition.i - 1][this.props.playerPosition.j];
+          // if (positionUp.toStreet) {
+          //   this.createStreet();
+          // }
           if (
-            playerPosition.neighbors.includes(positionUp) &&
+            this.props.playerPosition.neighbors.includes(positionUp) &&
             !positionUp.treeOne &&
             !positionUp.treeTwo &&
             !positionUp.treeThree
           ) {
-            const newGrid = movePlayer(
+            const newGrid = this.movePlayer(
               this.props.grid,
-              playerPosition.i - 1,
-              playerPosition.j
+              this.props.playerPosition.i - 1,
+              this.props.playerPosition.j
             );
-            this.setState({
-              grid: newGrid
-            });
+            this.props.moveThePlayer(newGrid, positionUp);
           }
           return;
         }
@@ -173,10 +170,7 @@ class MainGame extends React.Component {
   };
 
   createForest = () => {
-    const forestGrid = createForest([]);
-    this.props.makeForestGrid(forestGrid);
-    grid = forestGrid;
-    playerPosition = grid[0][0];
+    this.props.makeForestGrid();
     document.querySelector(".grid").style.backgroundImage = `url(${grass})`;
   };
 
@@ -204,8 +198,16 @@ class MainGame extends React.Component {
     document.querySelector(".grid").style.backgroundImage = `url(${grass})`;
   };
 
+  movePlayer = (grid, i, j) => {
+    grid[this.props.playerPosition.i][this.props.playerPosition.j].start = false;
+    grid[i][j].start = true;
+    return grid;
+  };
+
   render() {
-    console.log(this.props.grid);
+    if (this.props.grid) {
+      console.log(this.props.grid);
+    }
     return (
       <StyledMainGame>
         <table className="grid">
@@ -270,23 +272,23 @@ class MainGame extends React.Component {
 const mapStateToProps = state => {
   return {
     grid: state.grid.grid,
+    playerPosition: state.grid.playerPosition,
     character: state.character.character
   };
 };
 
 export default connect(
   mapStateToProps,
-  { makeForestGrid, makeStreetGrid, makeHouseGrid, makeGraveyardGrid }
+  {
+    makeForestGrid,
+    makeStreetGrid,
+    makeHouseGrid,
+    makeGraveyardGrid,
+    moveThePlayer
+  }
 )(MainGame);
 
 const rows = 10;
 const cols = 15;
 let playerPosition;
 let grid;
-
-const movePlayer = (grid, i, j) => {
-  grid[playerPosition.i][playerPosition.j].start = false;
-  playerPosition = grid[i][j];
-  grid[i][j].start = true;
-  return grid;
-};
