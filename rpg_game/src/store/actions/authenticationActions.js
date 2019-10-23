@@ -1,5 +1,4 @@
 import axios from "axios";
-import { axiosWithAuth } from "../axiosWithAuth";
 
 const appURL = "http://127.0.0.1:8000";
 

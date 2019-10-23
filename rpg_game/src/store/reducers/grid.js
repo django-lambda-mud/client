@@ -1,5 +1,6 @@
 import * as type from "../actions/gridActions";
 import createForest from "../../components/Maps/Forest/ForestFunctions";
+import createStreet from "../../components/Maps/Street/StreetFunctions";
 
 const initialState = {
   grid: null,
@@ -11,119 +12,24 @@ const initialState = {
 const rows = 10;
 const cols = 10;
 
-// const addNeighbors = (grid, i, j) => {
-//   if (i < rows - 1) {
-//     grid[i][j].neighbors.push(grid[i + 1][j]);
-//   }
-//   if (i > 0) {
-//     grid[i][j].neighbors.push(grid[i - 1][j]);
-//   }
-//   if (j < cols - 1) {
-//     grid[i][j].neighbors.push(grid[i][j + 1]);
-//   }
-//   if (j > 0) {
-//     grid[i][j].neighbors.push(grid[i][j - 1]);
-//   }
-// };
-
-// // const array = [...rooms.rooms];
-
-// grid = [];
-
-// tempArray = [];
-// keepTrackOfIndex = 9
-
-// for (let i = 0; i < array.length; i++) {
-// if(keepTrackOfIndex === i) {
-//   keepTrackOfIndex += 10;
-//   tempArray.push(array[i]);
-//   grid.push(tempArray);
-//   tempArray = [];
-// } else {
-//   tempArray.push(array[i]);
-// }
-// }
-
-// const rows = 10;
-// const cols = 10;
-
-// const createForest = (grid) => {
-// for (let i = 0; i < rows; i++) {
-//   const currentRow = [];
-//   for (let j = 0; j < cols; j++) {
-//     currentRow.push(createNode(i, j));
-//   }
-//   grid.push(currentRow);
-// }
-
-// for (let i = 0; i < rows; i++) {
-//   for (let j = 0; j < cols; j++) {
-//     addNeighbors(grid, i, j);
-//   }
-// }
-
-// return grid;
-// };
-
-// const createNode = (i, j) => {
-// return {
-//   i: i,
-//   j: j,
-//   start: i === 0 && j === 0, // create start point
-//   neighbors: [],
-//   treeOne:
-//     (i === 0 && j === 2) ||
-//     (i === 0 && j === 3) ||
-//     (i === 0 && j === 4) ||
-//     (i === 1 && j === 2) ||
-//     (i === 2 && j === 2) ||
-//     (i === 1 && j === 4) ||
-//     (i === 2 && j === 4) ||
-//     (i === 0 && j === 5) ||
-//     (i === 0 && j === 6) ||
-//     (i === 2 && j === 5),
-//   treeTwo:
-//     (i === 5 && j === 5) || (i === 5 && j === 6) || (i === 5 && j === 7),
-//   treeThree:
-//     (i === 8 && j === 0) ||
-//     (i === 9 && j === 0) ||
-//     (i === 9 && j === 1) ||
-//     (i === 9 && j === 2) ||
-//     (i === 9 && j === 4) ||
-//     (i === 9 && j === 5) ||
-//     (i === 9 && j === 6) ||
-//     (i === 9 && j === 7) ||
-//     (i === 9 && j === 8) ||
-//     (i === 9 && j === 9),
-//   grave: i === 0 && j === 8,
-//   goldOne: i === 0 && j === 9,
-//   // toStreet: i === 0 && j === 14,
-//   // toHouse: i === 9 && j === 3
-//   // add other neccessary key value pairs for more functionality
-// };
-// };
-
-// const addNeighbors = (grid, i, j) => {
-// if (i < rows - 1) {
-//   grid[i][j].neighbors.push(grid[i + 1][j]);
-// }
-// if (i > 0) {
-//   grid[i][j].neighbors.push(grid[i - 1][j]);
-// }
-// if (j < cols - 1) {
-//   grid[i][j].neighbors.push(grid[i][j + 1]);
-// }
-// if (j > 0) {
-//   grid[i][j].neighbors.push(grid[i][j - 1]);
-// }
-// };
-
 
 const grid = (state = initialState, action) => {
   switch (action.type) {
     case type.MAKE_FOREST_GRID:
       let rooms = action.payload;
-      
+
+      // we have a big array with objects // split only the forest world out of it:
+      let result = [];
+
+    let i,j,tempoArray,chunk = 100;
+    
+    for (i=0,j=rooms.length; i<j; i+=chunk) {
+    tempoArray = rooms.slice(i,i+chunk);
+    result.push(tempoArray)
+   }
+
+      rooms = result[0];
+      debugger
       let grid = [];
       let tempArray = [];
       let keepTrackOfIndex = 9;
@@ -152,6 +58,8 @@ const grid = (state = initialState, action) => {
           grid[i][j].treeThree = forest[i][j].treeThree;
           grid[i][j].grave = forest[i][j].grave;
           grid[i][j].goldOne = forest[i][j].goldOne;
+          grid[i][j].toStreet = forest[i][j].toStreet;
+          grid[i][j].toHouse = forest[i][j].toHouse;
         }
       }
 
@@ -162,10 +70,54 @@ const grid = (state = initialState, action) => {
       };
 
     case type.MAKE_STREET_GRID:
-      return {
-        ...state,
-        grid: action.payload
-      };
+        let allRooms = action.payload;
+
+        // we have a big array with objects // split only the forest world out of it:
+        let theResult = [];
+  
+      let streetI,streetJ,tempoStreetArray,streetChunk = 100;
+      
+      for (streetI=0,streetJ=allRooms.length; streetI<streetJ; streetI+=streetChunk) {
+      tempoStreetArray = allRooms.slice(streetI,streetI+streetChunk);
+      theResult.push(tempoStreetArray)
+     }
+  
+        allRooms = theResult[1];
+        debugger
+        let streetGrid = [];
+        let tempStreetArray = [];
+        let keepTrackOfStreetIndex = 9;
+        
+        for (let i = 0; i < allRooms.length; i++) {
+          if (keepTrackOfStreetIndex === i) {
+            keepTrackOfStreetIndex += 10;
+            tempStreetArray.push(allRooms[i]);
+            streetGrid.push(tempStreetArray);
+            tempStreetArray = [];
+          } else {
+            tempStreetArray.push(allRooms[i]);
+          }
+        }
+        
+        const street = createStreet([]);
+        
+        for (let i = 0; i < rows; i++) {
+          for (let j = 0; j < cols; j++) {
+            streetGrid[i][j].i = street[i][j].i;
+            streetGrid[i][j].j = street[i][j].j;
+            streetGrid[i][j].start = street[i][j].start;
+            streetGrid[i][j].neighbors = street[i][j].neighbors;
+            streetGrid[i][j].skeleton = street[i][j].skeleton;
+            streetGrid[i][j].goldStatue = street[i][j].goldStatue;
+            streetGrid[i][j].toForest = street[i][j].toForest;
+          }
+        }
+  
+        return {
+          ...state,
+          grid: streetGrid,
+          playerPosition: streetGrid[0][0]
+        };
 
     case type.MAKE_HOUSE_GRID:
       return {

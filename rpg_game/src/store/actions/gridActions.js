@@ -30,8 +30,11 @@ export const makeForestGrid = () => dispatch =>  {
   // return genericAction(MAKE_FOREST_GRID, forestGrid);
 };
 
-export const makeStreetGrid = (streetGrid) => {
- return genericAction(MAKE_STREET_GRID, streetGrid);
+export const makeStreetGrid = () => dispatch => {
+  axios.get(`${url}/rooms/`).then(res => {
+       
+    dispatch(genericAction(MAKE_STREET_GRID, res.data.rooms));
+  })
 };
 
 

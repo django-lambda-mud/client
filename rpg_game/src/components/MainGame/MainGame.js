@@ -3,10 +3,6 @@ import styled from "styled-components";
 import grass from "./images/grass.png";
 import wood from "./images/wood.png";
 import street from "./images/street.png";
-import createForest from "../Maps/Forest/ForestFunctions";
-import createStreet from "../Maps/Street/StreetFunctions";
-import createHouse from "../Maps/House/HouseFunctions";
-import createGraveyard from "../Maps/Graveyard/GraveyardFunctions";
 import { connect } from "react-redux";
 import Node from "../Node/Node";
 import {
@@ -44,7 +40,6 @@ const StyledMainGame = styled.div`
 
 class MainGame extends React.Component {
   componentDidMount = () => {
-    // this.props.makeForestGrid();
     this.createForest();
 
     window.addEventListener("keydown", e => {
@@ -60,18 +55,18 @@ class MainGame extends React.Component {
           const positionDown = this.props.grid[this.props.playerPosition.i + 1][
             this.props.playerPosition.j
           ];
-          // if (positionDown.toForest) {
-          //   this.createForest();
-          // }
-          // if (positionDown.toHouse) {
-          //   this.createHouse();
-          // }
-          // if (positionDown.toGraveyard) {
-          //   this.createGraveyard();
-          // }
-          // if (positionDown.exitStreet) {
-          //   this.createStreet();
-          // }
+          if (positionDown.toForest) {
+            this.createForest();
+          }
+          if (positionDown.toHouse) {
+            this.createHouse();
+          }
+          if (positionDown.toGraveyard) {
+            this.createGraveyard();
+          }
+          if (positionDown.exitStreet) {
+            this.createStreet();
+          }
           if (
             this.props.playerPosition.s_to !== 0
              &&
@@ -95,9 +90,9 @@ class MainGame extends React.Component {
           const positionLeft = this.props.grid[this.props.playerPosition.i][
             this.props.playerPosition.j - 1
           ];
-          // if (positionLeft.toForest) {
-          //   this.createForest();
-          // }
+          if (positionLeft.toForest) {
+            this.createForest();
+          }
           if (
             this.props.playerPosition.w_to !== 0 && // .neighbors.includes(positionLeft) was old code
             !positionLeft.treeOne &&
@@ -120,15 +115,15 @@ class MainGame extends React.Component {
           const positionRight = this.props.grid[this.props.playerPosition.i][
             this.props.playerPosition.j + 1
           ];
-          // if (positionRight.toForest) {
-          //   this.createForest();
-          // }
-          // if (positionRight.toStreet) {
-          //   this.createStreet();
-          // }
-          // if (positionRight.toGraveyard) {
-          //   this.createGraveyard();
-          // }
+          if (positionRight.toForest) {
+            this.createForest();
+          }
+          if (positionRight.toStreet) {
+            this.createStreet();
+          }
+          if (positionRight.toGraveyard) {
+            this.createGraveyard();
+          }
           if (
             this.props.playerPosition.e_to !== 0 &&
             !positionRight.treeOne &&
@@ -151,9 +146,9 @@ class MainGame extends React.Component {
           const positionUp = this.props.grid[this.props.playerPosition.i - 1][
             this.props.playerPosition.j
           ];
-          // if (positionUp.toStreet) {
-          //   this.createStreet();
-          // }
+          if (positionUp.toStreet) {
+            this.createStreet();
+          }
           if (
             this.props.playerPosition.n_to !== 0 &&
             !positionUp.treeOne &&
@@ -181,26 +176,17 @@ class MainGame extends React.Component {
   };
 
   createStreet = () => {
-    const streetGrid = createStreet([]);
-    this.props.makeStreetGrid(streetGrid);
-    grid = streetGrid;
-    playerPosition = grid[0][0];
+    this.props.makeStreetGrid();
     document.querySelector(".grid").style.backgroundImage = `url(${street})`;
   };
 
   createHouse = () => {
-    const houseGrid = createHouse([]);
-    this.props.makeHouseGrid(houseGrid);
-    grid = houseGrid;
-    playerPosition = grid[0][0];
+    this.props.makeHouseGrid();
     document.querySelector(".grid").style.backgroundImage = `url(${wood})`;
   };
 
   createGraveyard = () => {
-    const graveyardGrid = createGraveyard([]);
-    this.props.makeGraveyardGrid(graveyardGrid);
-    grid = graveyardGrid;
-    playerPosition = grid[0][0];
+    this.props.makeGraveyardGrid();
     document.querySelector(".grid").style.backgroundImage = `url(${grass})`;
   };
 
@@ -298,5 +284,3 @@ export default connect(
 
 const rows = 10;
 const cols = 10;
-let playerPosition;
-let grid;
