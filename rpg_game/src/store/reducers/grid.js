@@ -146,7 +146,7 @@ const grid = (state = initialState, action) => {
       return {
         ...state,
         grid: newGrid,
-        playerPosition: action.playerPosition
+        playerPosition: action.payload
       };
 
     default:
