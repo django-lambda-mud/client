@@ -7,6 +7,7 @@ import characterFive from "../../Node/images/character_five.png";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { chooseCharacter } from "../../../store/actions/characterActions";
+import { withRouter } from "react-router-dom";
 
 const StyledCharacter = styled.div`
 
@@ -34,4 +35,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, {chooseCharacter })(Character);
+export default withRouter(connect(mapStateToProps, {chooseCharacter })(Character));
