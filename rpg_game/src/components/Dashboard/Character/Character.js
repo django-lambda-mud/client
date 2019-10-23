@@ -8,9 +8,15 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import { chooseCharacter } from "../../../store/actions/characterActions";
 import { withRouter } from "react-router-dom";
+import img from '../../../assets/clouds-dark-lightning-1118869.jpg'
 
 const StyledCharacter = styled.div`
-
+  background-image: url(${img});
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  height: auto;
+  display: flex;
+  flex-direction: column;
 `;
 
 class Character extends React.Component {

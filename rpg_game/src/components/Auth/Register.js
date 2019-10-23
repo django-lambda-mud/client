@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { doSignUp } from "../../store/actions/authenticationActions";
-
+import {Link } from "react-router-dom";
 import img from '../../assets/clouds-dark-lightning-1118869.jpg'
 import logo from '../../assets/M.svg'
 import styled from 'styled-components'
@@ -69,6 +69,7 @@ class Register extends React.Component {
               placeholder="Verify Password"
             />
             <button onClick={this.register}>Get Started</button>
+            <p>Already have an account?</p> <Link to="/"><span>Login Here</span></Link>
           </div>
         </div>
       </RegisterWrapper>
@@ -128,6 +129,21 @@ const RegisterWrapper = styled.div`
         color: #d6cace;
         font-weight: bold;
         cursor: pointer;
+      }
+
+      p {
+        font-size: 14px;
+      }
+
+      span {
+        font-size: 14px;
+        font-weight: bold;
+      }
+
+      span {
+        &:hover {
+          color: #d6cace;
+        }
       }
     }
   }
