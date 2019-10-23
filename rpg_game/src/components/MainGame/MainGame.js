@@ -3,7 +3,7 @@ import styled from "styled-components";
 import grass from "./images/grass.png";
 import wood from "./images/wood.png";
 import street from "./images/street.png";
-import createForest from "../Maps/Forest/ForestFunctions";
+// import createForest from "../Maps/Forest/ForestFunctions";
 import createStreet from "../Maps/Street/StreetFunctions";
 import createHouse from "../Maps/House/HouseFunctions";
 import createGraveyard from "../Maps/Graveyard/GraveyardFunctions";
@@ -41,6 +41,9 @@ const StyledMainGame = styled.div`
     background-position: 0 0;
   }
 `;
+
+// eslint-disable-next-line
+let playerPosition;
 
 class MainGame extends React.Component {
   componentDidMount = () => {
@@ -298,5 +301,4 @@ export default connect(
 
 const rows = 10;
 const cols = 10;
-let playerPosition;
 let grid;
