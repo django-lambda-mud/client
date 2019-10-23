@@ -17,12 +17,12 @@ export const genericAction = (type, payload) => ({
 });
 
 export const doLogIn = (user, history ) => dispatch => {
-  debugger
+   
   dispatch(genericAction(LOADING_USER, true));
   axios
     .post(`${appURL}/api/login/`, user)
     .then(response => {
-      debugger
+       
       const { key } = response.data;
       // dispatch(genericAction(LOGIN, userId));
       localStorage.setItem("token", key);
@@ -30,7 +30,7 @@ export const doLogIn = (user, history ) => dispatch => {
       history.push("/character")
     })
     .catch(error => {
-      debugger
+       
       let { errorMessage } = error.response.data;
       dispatch(genericAction(LOGIN_ERROR, errorMessage));
     })
@@ -38,12 +38,12 @@ export const doLogIn = (user, history ) => dispatch => {
 };
 
 export const doSignUp = (user, history) => dispatch => {
-  debugger
+   
   dispatch(genericAction(LOADING_USER, true));
   axios
     .post(`${appURL}/api/registration/`, user)
     .then(response => {
-      debugger
+       
       const { key } = response.data;
       // dispatch(genericAction(LOGIN, user.id));
       localStorage.setItem("token", key);
@@ -51,7 +51,7 @@ export const doSignUp = (user, history) => dispatch => {
       history.push("/character")
     })
     .catch(error => {
-      debugger
+       
       let { errorMessage } = error.response.data;
       dispatch(genericAction(SIGNUP_ERROR, errorMessage));
     })

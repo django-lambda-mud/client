@@ -190,7 +190,6 @@ const grid = (state = initialState, action) => {
         }
         return room;
       });
-      debugger;
 
       return {
         ...state,

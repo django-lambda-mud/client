@@ -19,10 +19,10 @@ const url = "http://127.0.0.1:8000/api/adv";
 
 export const makeForestGrid = () => dispatch =>  {
   axiosWithAuth().get(`${url}/init/`).then(res => {
-    debugger
+     
 
    return axios.get(`${url}/rooms/`).then(res => {
-      debugger
+       
       dispatch(genericAction(MAKE_FOREST_GRID, res.data.rooms))
     })
   })
@@ -45,9 +45,9 @@ export const makeGraveyardGrid = (graveyardGrid) => {
 
 export const moveThePlayer = (newGrid, playerPosition, direction) => dispatch => {
   const reqBody = {direction: direction};
-  debugger
+   
   axiosWithAuth().post(`${url}/move/`, reqBody).then(res => {
-    debugger
+     
      dispatch(genericAction(MOVE_PLAYER, newGrid, res.title, playerPosition ));
   });
 };
