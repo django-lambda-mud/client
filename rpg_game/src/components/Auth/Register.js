@@ -1,6 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import { doSignUp } from "../../store/actions/authenticationActions";
+import {Link } from "react-router-dom";
+import img from '../../assets/atmosphere-blue-clouds-2531709.jpg'
+import logo from '../../assets/M.svg'
+import styled from 'styled-components'
 
 class Register extends React.Component {
   constructor(props) {
@@ -38,14 +42,16 @@ class Register extends React.Component {
 
   render() {
     return (
-      <div className="log-reg">
+      <RegisterWrapper>
         <div className="register">
+          
           <div className="inputs">
+            <img src={logo} alt="logo"></img>
             <input
               name="username"
               onChange={this.handleChange}
               value={this.state.username}
-              placeholder="Username"
+              placeholder="Username.."
               type="text"
             />
             <input
@@ -53,25 +59,97 @@ class Register extends React.Component {
               type="password"
               onChange={this.handleChange}
               value={this.state.password1}
-              placeholder="Password One"
+              placeholder="Password.."
             />
             <input
               name="password2"
               type="password"
               onChange={this.handleChange}
               value={this.state.password2}
-              placeholder="Password Two"
+              placeholder="Verify Password"
             />
+            <button onClick={this.register}>Get Started</button>
+            <p>Already have an account?</p> <Link to="/"><span>Login Here</span></Link>
           </div>
-
-          <p onClick={this.register} className="btn btn--white">
-            register
-          </p>
         </div>
-      </div>
+      </RegisterWrapper>
     );
   }
 }
+
+const RegisterWrapper = styled.div`
+  background-image: url(${img});
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+
+  .register {
+    img {
+      margin: auto;
+      width: 7%;
+      margin-bottom: 50px;
+    }
+    .inputs {
+      display: flex;
+      flex-direction: column;
+      // align-items: center;
+      margin: auto;
+      margin-top: 20%;
+      width: 50%;
+      color: white;
+
+      input {
+        margin: auto;
+        width: 50%;
+        margin-top: 1.0rem;
+        border: none;
+        background-color: #515d8c61;
+        padding: 12px;
+        color: #e1e2e6;
+        font-size: 13px;
+        padding-left: 20px;
+        font-weight: bold;
+        font-family: 'Antic', sans-serif;
+
+        ::placeholder {
+          color: #e1e2e6;
+          font-weight: bold;
+        }
+      }
+
+      button {
+        margin: auto;
+        width: 40%;
+        margin-top: 80px;
+        border: none;
+        border-radius: 50px;
+        background-color: #020011
+        padding: 15px;
+        font-size: 13px;
+        color: #e1e2e6;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      p {
+        font-size: 14px;
+      }
+
+      span {
+        font-size: 14px;
+        font-weight: bold;
+      }
+
+      span {
+        &:hover {
+          color: #d6cace;
+        }
+      }
+    }
+  }
+`;
 
 const mapStateToProps = state => {
   return {

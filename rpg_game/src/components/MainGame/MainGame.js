@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import grass from "./images/grass.png";
+import img from "./images/atmosphere-blue-clouds-2531709.jpg";
 import wood from "./images/wood.png";
 import street from "./images/street.png";
-import createForest from "../Maps/Forest/ForestFunctions";
+// import createForest from "../Maps/Forest/ForestFunctions";
 import createStreet from "../Maps/Street/StreetFunctions";
 import createHouse from "../Maps/House/HouseFunctions";
 import createGraveyard from "../Maps/Graveyard/GraveyardFunctions";
@@ -22,25 +22,8 @@ import characterThree from "../Node/images/character_three.png";
 import characterFour from "../Node/images/character_four.png";
 import characterFive from "../Node/images/character_five.png";
 
-const StyledMainGame = styled.div`
-  display: flex;
-
-  .grid {
-    background-image: url(${grass});
-  }
-
-  .node {
-    width: 4rem;
-    height: 4rem;
-  }
-
-  .node-child {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-position: 0 0;
-  }
-`;
+// eslint-disable-next-line
+let playerPosition;
 
 class MainGame extends React.Component {
   componentDidMount = () => {
@@ -177,7 +160,6 @@ class MainGame extends React.Component {
 
   createForest = () => {
     this.props.makeForestGrid();
-    document.querySelector(".grid").style.backgroundImage = `url(${grass})`;
   };
 
   createStreet = () => {
@@ -201,7 +183,7 @@ class MainGame extends React.Component {
     this.props.makeGraveyardGrid(graveyardGrid);
     grid = graveyardGrid;
     playerPosition = grid[0][0];
-    document.querySelector(".grid").style.backgroundImage = `url(${grass})`;
+    document.querySelector(".grid").style.backgroundImage = `url(${img})`;
   };
 
   movePlayer = (grid, i, j) => {
@@ -272,16 +254,97 @@ class MainGame extends React.Component {
               : null}
           </tbody>
         </table>
+        <div className="game-info">
+              <div className="room-info">
+                <p>Room {this.props.currentRoom ? this.props.currentRoom.title: ''}</p>
+                <h5><u>Roommates</u></h5>
+                <ul>
+                {this.props.currentRoom ? this.props.currentRoom.players.map((player) => {
+                  return <li>{player}</li>
+                }) : ''}
+                </ul>
+              </div>
+              <div className="chat-space">
+
+                
+              </div>
+        </div>
       </StyledMainGame>
     );
   }
 }
 
+const StyledMainGame = styled.div`
+  background-image: url(${img});
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  padding: 40px;
+  display: flex;
+  justify-content: space-around;
+
+  .grid {
+    border: 5px solid #01134c;
+    margin: 20px;
+    width: 70%;
+    box-shadow: 0px 1.87781px 6.25935px rgba(0, 0, 0, 2.06);
+  }
+
+  .game-info {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+
+    .room-info {
+      padding: 10px;
+      border: 2px solid #01134c;
+      width: 100%;
+      min-height: 250px;
+      height: auto;
+      margin-bottom: 30px;
+      box-shadow: 0px 1.87781px 6.25935px rgba(0, 0, 0, 2.06);
+
+      h5 {
+        margin-top: 30px;
+        color: #fff;
+        font-size: 20px;
+      }
+
+      li {
+        margin-top: 10px;
+        color: #fff;
+        font-size: 13px;
+      }
+    }
+
+    .chat-space {
+      border: 2px solid #01134c;
+      width: 100%;
+      min-height: 250px;
+      height: auto;
+      box-shadow: 0px 1.87781px 6.25935px rgba(0, 0, 0, 2.06);
+    }
+  }
+
+  .node {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .node-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-position: 0 0;
+  }
+`;
+
+
 const mapStateToProps = state => {
   return {
     grid: state.grid.grid,
     playerPosition: state.grid.playerPosition,
-    character: state.character.character
+    character: state.character.character,
+    currentRoom: state.grid.currentRoom
   };
 };
 
@@ -298,5 +361,4 @@ export default connect(
 
 const rows = 10;
 const cols = 10;
-let playerPosition;
 let grid;
