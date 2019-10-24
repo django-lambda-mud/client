@@ -8,13 +8,15 @@ import createStreet from "../Maps/Street/StreetFunctions";
 import createHouse from "../Maps/House/HouseFunctions";
 import createGraveyard from "../Maps/Graveyard/GraveyardFunctions";
 import { connect } from "react-redux";
+import Pusher from 'pusher-js';
 import Node from "../Node/Node";
 import {
   makeStreetGrid,
   makeForestGrid,
   makeHouseGrid,
   makeGraveyardGrid,
-  moveThePlayer
+  moveThePlayer,
+  sendMessage
 } from "../../store/actions/gridActions";
 import characterOne from "../Node/images/character_one.png";
 import characterTwo from "../Node/images/character_two.png";
@@ -26,14 +28,58 @@ import characterFive from "../Node/images/character_five.png";
 let playerPosition;
 
 class MainGame extends React.Component {
-  componentDidMount = () => {
-    // this.props.makeForestGrid();
-    this.createForest();
+  constructor(props) {
+    super(props)
 
+    this.state = {
+      text: '',
+      chats: [],
+      currentRoom: null
+    }
+  }
+
+  componentWillMount = () => {
+    this.createForest();
+  }
+
+  componentDidMount = () => {
     window.addEventListener("keydown", e => {
       this.handleKeyDown(e);
     });
   };
+
+  componentDidUpdate = (prevProps) => {
+    if (prevProps.currentRoom !== this.props.currentRoom) {
+      this.setState({ currentRoom: this.props.currentRoom })
+      const pusher = new Pusher('f2df1cd773bc785afe1e', {
+        cluster: 'eu',
+        forceTLS: true,
+        encrypted: true
+      });
+      console.log('mudroom-'+this.props.currentRoom.title)
+      const channel = pusher.subscribe('mudroom-'+this.props.currentRoom.title);
+      channel.bind('message', data => {
+        this.setState({ chats: [...this.state.chats, data] })
+      });
+    }
+  }
+
+  handleTextChange = (e) => {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      const payload = {
+        room: this.props.currentRoom.title,
+        username: this.props.currentRoom.name,
+        message: this.state.text
+      };
+      this.setState({ text: '' })
+      this.props.sendMessage(payload)
+    } else {
+      this.setState({ text: e.target.value });
+    }
+  }
+
+
 
   handleKeyDown = e => {
     switch (e.keyCode) {
@@ -196,7 +242,7 @@ class MainGame extends React.Component {
 
   render() {
     if (this.props.grid) {
-      console.log(this.props.grid);
+      // console.log(this.props.grid);
     }
     return (
       <StyledMainGame>
@@ -259,14 +305,22 @@ class MainGame extends React.Component {
                 <p>Room {this.props.currentRoom ? this.props.currentRoom.title: ''}</p>
                 <h5><u>Roommates</u></h5>
                 <ul>
-                {this.props.currentRoom ? this.props.currentRoom.players.map((player) => {
-                  return <li>{player}</li>
+                {this.props.currentRoom ? this.props.currentRoom.players.map((player, index) => {
+                  return <li key={index}>{player}</li>
                 }) : ''}
                 </ul>
               </div>
               <div className="chat-space">
-
-                
+                <div className="message-view">
+                  {this.state.chats ? this.state.chats.map((chat, index) => {
+                    return <div key={index}><span>{chat.username}:</span> <span>{chat.message}</span></div>
+                  }): ''}
+                </div>
+                <div className="input-field">
+                  <form>
+                    <input value={this.state.text} onChange={this.handleTextChange} onKeyDown={this.handleTextChange}/>
+                  </form>
+                </div>
               </div>
         </div>
       </StyledMainGame>
@@ -322,6 +376,32 @@ const StyledMainGame = styled.div`
       min-height: 250px;
       height: auto;
       box-shadow: 0px 1.87781px 6.25935px rgba(0, 0, 0, 2.06);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px;
+
+      .message-view {
+        border: 1px solid white;
+        background: #fff;
+        flex: 1
+        padding: 10px;
+
+        span {
+          color: black;
+          font-size: 12px;
+        }
+      }
+
+      .input-field {
+        margin-top: 20px;
+        input {
+          padding: 5px;
+        }
+        button {
+          padding: 5px;
+        }
+      }
     }
   }
 
@@ -355,7 +435,8 @@ export default connect(
     makeStreetGrid,
     makeHouseGrid,
     makeGraveyardGrid,
-    moveThePlayer
+    moveThePlayer,
+    sendMessage
   }
 )(MainGame);
 
