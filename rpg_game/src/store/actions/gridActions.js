@@ -9,52 +9,98 @@ export const MAKE_GRAVEYARD_GRID = "MAKE_GRAVEYARD_GRID";
 export const MOVE_PLAYER = "MOVE_PLAYER";
 export const ROOM_INFO = "ROOM_INFO";
 
-export const genericAction = (type, payload, roomTitle, playerPosition) => ({
+export const genericAction = (type, payload, roomTitle, players) => ({
   type,
   payload,
   roomTitle,
-  playerPosition
+  players
 });
 
-const url = "https://muddyapp.herokuapp.com/api/adv";
+const url = "http://127.0.0.1:8000/api/adv";
 
-export const sendMessage = (payload) => dispatch => {
-  axios.post(`${url}/say`, payload)
-}
-
-export const makeForestGrid = () => dispatch =>  {
-  axiosWithAuth().get(`${url}/init/`).then(res => {
-    dispatch(genericAction(ROOM_INFO, res.data))
-   return axios.get(`${url}/rooms/`).then(res => {
-      dispatch(genericAction(MAKE_FOREST_GRID, res.data.rooms))
-    })
-  })
-  
-  // return genericAction(MAKE_FOREST_GRID, forestGrid);
+export const sendMessage = payload => dispatch => {
+  axios.post(`${url}/say`, payload);
 };
 
-export const makeStreetGrid = (streetGrid) => {
- return genericAction(MAKE_STREET_GRID, streetGrid);
+export const makeForestGrid = () => dispatch => {
+  let currentPosition;
+  axiosWithAuth().get(`${url}/init/`)
+    .then(res => {
+      debugger
+      currentPosition = res.data.title;
+      const players = res.data.player;
+      return axios.get(`${url}/rooms/`).then(res => {
+        if (Number(currentPosition) < 99) {
+          dispatch(
+            genericAction(MAKE_FOREST_GRID, res.data.rooms, currentPosition, players)
+          );
+        } else {
+
+          dispatch(
+            genericAction(MAKE_STREET_GRID, res.data.rooms, currentPosition, players)
+          );
+        }
+      });
+    });
 };
 
+export const makeStreetGrid = streetGrid => dispatch => {
+  let currentPosition;
+  axiosWithAuth()
+    .get(`${url}/init/`)
+    .then(res => {
+      currentPosition = res.data.title;
+      const players = res.data.player;
+      return axios.get(`${url}/rooms/`).then(res => {
 
-export const makeHouseGrid = (houseGrid) => {
+        dispatch(
+          genericAction(MAKE_STREET_GRID, res.data.rooms, currentPosition, players)
+        );
+      });
+    });
+};
+
+export const makeHouseGrid = houseGrid => {
   return genericAction(MAKE_FOREST_GRID, houseGrid);
 };
 
-export const makeGraveyardGrid = (graveyardGrid) => {
+export const makeGraveyardGrid = graveyardGrid => {
   return genericAction(MAKE_GRAVEYARD_GRID, graveyardGrid);
 };
 
-export const moveThePlayer = (newGrid, playerPosition, direction) => dispatch => {
-  const reqBody = {direction: direction};
-   
-  axiosWithAuth().post(`${url}/move/`, reqBody).then(res => {
-     dispatch(genericAction(MOVE_PLAYER, newGrid, res.title, playerPosition ));
+export const moveThePlayer = direction => dispatch => {
+  const reqBody = { direction: direction };
 
-     return axiosWithAuth().get(`${url}/init/`).then(res => {
-      dispatch(genericAction(ROOM_INFO, res.data))
-     })
+
+  let currentPosition;
+  axiosWithAuth()
+    .post(`${url}/move/`, reqBody)
+    .then(res => {
+      currentPosition = res.data.title;
+      if (res.data.title === "100") {
+        axiosWithAuth()
+        .get(`${url}/init/`)
+        .then(res => {
+          const players = res.data.player;            
+          return axios.get(`${url}/rooms/`).then(res => {
+            dispatch(
+              genericAction(MAKE_STREET_GRID, res.data.rooms, currentPosition, players)
+            );
+          });
+        });
+    } else if (res.data.title === "0") {
+      axiosWithAuth()
+        .get(`${url}/init/`)
+        .then(res => {
+          const players = res.data.player;
+          return axios.get(`${url}/rooms/`).then(res => {
+            dispatch(
+              genericAction(MAKE_FOREST_GRID, res.data.rooms, currentPosition, players)
+            );
+          });
+        });
+    } else {
+      dispatch(genericAction(MOVE_PLAYER, currentPosition));
+    }
   });
 };
-
