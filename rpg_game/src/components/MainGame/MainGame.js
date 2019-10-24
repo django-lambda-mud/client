@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import grass from "./images/grass.png";
+import img from "./images/atmosphere-blue-clouds-2531709.jpg";
 import wood from "./images/wood.png";
 import street from "./images/street.png";
 // import createForest from "../Maps/Forest/ForestFunctions";
@@ -23,10 +23,11 @@ import characterFour from "../Node/images/character_four.png";
 import characterFive from "../Node/images/character_five.png";
 
 const StyledMainGame = styled.div`
-  display: flex;
-
+  background-image: url(${img});
+  background-repeat: no-repeat;
+  min-height: 100vh;
   .grid {
-    background-image: url(${grass});
+    background-image: url(${img});
   }
 
   .node {
@@ -180,7 +181,7 @@ class MainGame extends React.Component {
 
   createForest = () => {
     this.props.makeForestGrid();
-    document.querySelector(".grid").style.backgroundImage = `url(${grass})`;
+    // document.querySelector(".grid").style.backgroundImage = `url(${img})`;
   };
 
   createStreet = () => {
@@ -204,7 +205,7 @@ class MainGame extends React.Component {
     this.props.makeGraveyardGrid(graveyardGrid);
     grid = graveyardGrid;
     playerPosition = grid[0][0];
-    document.querySelector(".grid").style.backgroundImage = `url(${grass})`;
+    document.querySelector(".grid").style.backgroundImage = `url(${img})`;
   };
 
   movePlayer = (grid, i, j) => {
