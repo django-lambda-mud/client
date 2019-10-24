@@ -139,6 +139,9 @@ const grid = (state = initialState, action) => {
           streetGrid[i][j].skeleton = street[i][j].skeleton;
           streetGrid[i][j].goldStatue = street[i][j].goldStatue;
           streetGrid[i][j].toForest = street[i][j].toForest;
+          streetGrid[i][j].darkTree = street[i][j].darkTree;
+          streetGrid[i][j].grave = street[i][j].grave;
+          streetGrid[i][j].goldOne = street[i][j].goldOne;
         }
       }
 

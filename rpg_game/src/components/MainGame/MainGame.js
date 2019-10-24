@@ -43,7 +43,8 @@ class MainGame extends React.Component {
             !positionDown.skeleton &&
             !positionDown.grave &&
             !positionDown.goldOne &&
-            !positionDown.goldStatue
+            !positionDown.goldStatue &&
+            !positionDown.darkTree
           ) {
             this.props.moveThePlayer("s");
           }
@@ -64,7 +65,8 @@ class MainGame extends React.Component {
             !positionLeft.skeleton &&
             !positionLeft.grave &&
             !positionLeft.goldOne &&
-            !positionLeft.goldStatue
+            !positionLeft.goldStatue &&
+            !positionLeft.darkTree
           ) {
             this.props.moveThePlayer("w");
           }
@@ -85,7 +87,8 @@ class MainGame extends React.Component {
             !positionRight.skeleton &&
             !positionRight.grave &&
             !positionRight.goldOne &&
-            !positionRight.goldStatue
+            !positionRight.goldStatue &&
+            !positionRight.darkTree
           ) {
             this.props.moveThePlayer("e");
           }
@@ -106,7 +109,8 @@ class MainGame extends React.Component {
             !positionUp.skeleton &&
             !positionUp.grave &&
             !positionUp.goldOne &&
-            !positionUp.goldStatue
+            !positionUp.goldStatue &&
+            !positionUp.darkTree
           ) {
             this.props.moveThePlayer("n");
           }
