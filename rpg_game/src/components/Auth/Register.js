@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { doSignUp } from "../../store/actions/authenticationActions";
 import {Link } from "react-router-dom";
-import img from '../../assets/clouds-dark-lightning-1118869.jpg'
+import img from '../../assets/atmosphere-blue-clouds-2531709.jpg'
 import logo from '../../assets/M.svg'
 import styled from 'styled-components'
 
@@ -95,7 +95,8 @@ const RegisterWrapper = styled.div`
       display: flex;
       flex-direction: column;
       // align-items: center;
-      margin: 20% auto;
+      margin: auto;
+      margin-top: 20%;
       width: 50%;
       color: white;
 
@@ -104,15 +105,15 @@ const RegisterWrapper = styled.div`
         width: 50%;
         margin-top: 1.0rem;
         border: none;
-        background-color: #f6ac8266;
+        background-color: #515d8c61;
         padding: 12px;
-        color: #d6cace;
+        color: #e1e2e6;
         font-size: 13px;
         padding-left: 20px;
         font-weight: bold;
 
         ::placeholder {
-          color: #d6cace;
+          color: #e1e2e6;
           font-weight: bold;
         }
       }
@@ -123,10 +124,10 @@ const RegisterWrapper = styled.div`
         margin-top: 80px;
         border: none;
         border-radius: 50px;
-        background-color: #18061d
+        background-color: #020011
         padding: 15px;
         font-size: 13px;
-        color: #d6cace;
+        color: #e1e2e6;
         font-weight: bold;
         cursor: pointer;
       }
