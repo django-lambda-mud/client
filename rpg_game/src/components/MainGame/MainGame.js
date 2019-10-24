@@ -318,7 +318,7 @@ class MainGame extends React.Component {
                 </div>
                 <div className="input-field">
                   <form>
-                    <input value={this.state.text} onChange={this.handleTextChange} onKeyDown={this.handleTextChange}/>
+                    <input placeholder="chat with roomates" value={this.state.text} onChange={this.handleTextChange} onKeyDown={this.handleTextChange}/>
                   </form>
                 </div>
               </div>
@@ -397,9 +397,12 @@ const StyledMainGame = styled.div`
         margin-top: 20px;
         input {
           padding: 5px;
-        }
-        button {
-          padding: 5px;
+          width: 100%;
+          border: none;
+
+          ::placeholder {
+            color: #111
+          }
         }
       }
     }
