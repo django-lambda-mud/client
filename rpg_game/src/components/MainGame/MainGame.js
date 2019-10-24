@@ -3,7 +3,7 @@ import styled from "styled-components";
 import img from "./images/atmosphere-blue-clouds-2531709.jpg";
 import wood from "./images/wood.png";
 import street from "./images/street.png";
-// import createForest from "../Maps/Forest/ForestFunctions";
+import createForest from "../Maps/Forest/ForestFunctions";
 import createStreet from "../Maps/Street/StreetFunctions";
 import createHouse from "../Maps/House/HouseFunctions";
 import createGraveyard from "../Maps/Graveyard/GraveyardFunctions";
