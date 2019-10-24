@@ -3,12 +3,12 @@ import createForest from "../../components/Maps/Forest/ForestFunctions";
 import createStreet from "../../components/Maps/Street/StreetFunctions";
 
 const initialState = {
-  maingrid: [],
   grid: null,
   playerPosition: null,
   loading: null,
   error: null,
   currentRoom: null,
+  player: null,
 };
 
 const rows = 10;
@@ -81,9 +81,9 @@ const grid = (state = initialState, action) => {
 
       return {
         ...state,
-        maingrid: action.payload,
         grid: grid,
-        playerPosition: keepTrackOfCurrentForestPosition
+        playerPosition: keepTrackOfCurrentForestPosition,
+        players: action.players
       };
 
     case type.MAKE_STREET_GRID:
@@ -145,7 +145,8 @@ const grid = (state = initialState, action) => {
       return {
         ...state,
         grid: streetGrid,
-        playerPosition: keepTrackOfCurrentStreetPosition
+        playerPosition: keepTrackOfCurrentStreetPosition,
+        players: action.players
       };
 
     case type.MAKE_HOUSE_GRID:
@@ -179,7 +180,8 @@ const grid = (state = initialState, action) => {
       return {
         ...state,
         grid: currentGrid,
-        playerPosition: keepTrackOfCurrentPosition
+        playerPosition: keepTrackOfCurrentPosition,
+        players: action.players
       };
 
     default:

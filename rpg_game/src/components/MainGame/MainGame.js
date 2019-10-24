@@ -205,14 +205,14 @@ class MainGame extends React.Component {
         <div className="game-info">
           <div className="room-info">
             <p>
-              Room {this.props.currentRoom ? this.props.currentRoom.title : ""}
+              Room {this.props.playerPosition ? this.props.playerPosition.title : ""}
             </p>
             <h5>
               <u>Roommates</u>
             </h5>
             <ul>
-              {this.props.currentRoom
-                ? this.props.currentRoom.players.map(player => {
+              {this.props.players
+                ? this.props.players.map(player => {
                     return <li>{player}</li>;
                   })
                 : ""}
@@ -294,7 +294,7 @@ const mapStateToProps = state => {
     grid: state.grid.grid,
     playerPosition: state.grid.playerPosition,
     character: state.character.character,
-    currentRoom: state.grid.currentRoom
+    players: state.grid.players
   };
 };
 

@@ -9,10 +9,11 @@ export const MAKE_GRAVEYARD_GRID = "MAKE_GRAVEYARD_GRID";
 export const MOVE_PLAYER = "MOVE_PLAYER";
 export const ROOM_INFO = "ROOM_INFO";
 
-export const genericAction = (type, payload, roomTitle) => ({
+export const genericAction = (type, payload, roomTitle, players) => ({
   type,
   payload,
-  roomTitle
+  roomTitle,
+  players
 });
 
 const url = "http://127.0.0.1:8000/api/adv";
@@ -25,15 +26,16 @@ export const makeForestGrid = () => dispatch => {
     .then(res => {
       debugger
       currentPosition = res.data.title;
+      const players = res.data.player;
       return axios.get(`${url}/rooms/`).then(res => {
         if (Number(currentPosition) < 99) {
           dispatch(
-            genericAction(MAKE_FOREST_GRID, res.data.rooms, currentPosition)
+            genericAction(MAKE_FOREST_GRID, res.data.rooms, currentPosition, players)
           );
         } else {
           
           dispatch(
-            genericAction(MAKE_STREET_GRID, res.data.rooms, currentPosition)
+            genericAction(MAKE_STREET_GRID, res.data.rooms, currentPosition, players)
           );
         }
       });
@@ -47,15 +49,14 @@ export const makeStreetGrid = () => dispatch => {
     .get(`${url}/init/`)
     .then(res => {
       currentPosition = res.data.title;
+      const players = res.data.player;
       return axios.get(`${url}/rooms/`).then(res => {
         
         dispatch(
-          genericAction(MAKE_STREET_GRID, res.data.rooms, currentPosition)
+          genericAction(MAKE_STREET_GRID, res.data.rooms, currentPosition, players)
         );
       });
     });
-
-  axios.get(`${url}/rooms/`).then(res => {});
 };
 
 export const makeHouseGrid = houseGrid => {
@@ -78,10 +79,10 @@ export const moveThePlayer = direction => dispatch => {
         axiosWithAuth()
           .get(`${url}/init/`)
           .then(res => {
-            
+            const players = res.data.player;            
             return axios.get(`${url}/rooms/`).then(res => {
               dispatch(
-                genericAction(MAKE_STREET_GRID, res.data.rooms, currentPosition)
+                genericAction(MAKE_STREET_GRID, res.data.rooms, currentPosition, players)
               );
             });
           });
@@ -89,10 +90,10 @@ export const moveThePlayer = direction => dispatch => {
         axiosWithAuth()
           .get(`${url}/init/`)
           .then(res => {
-            
+            const players = res.data.player;
             return axios.get(`${url}/rooms/`).then(res => {
               dispatch(
-                genericAction(MAKE_FOREST_GRID, res.data.rooms, currentPosition)
+                genericAction(MAKE_FOREST_GRID, res.data.rooms, currentPosition, players)
               );
             });
           });
