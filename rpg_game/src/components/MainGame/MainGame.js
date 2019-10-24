@@ -1,14 +1,22 @@
 import React from "react";
 import styled from "styled-components";
 import img from "./images/atmosphere-blue-clouds-2531709.jpg";
+import wood from "./images/wood.png";
+import street from "./images/street.png";
+import createForest from "../Maps/Forest/ForestFunctions";
+import createStreet from "../Maps/Street/StreetFunctions";
+import createHouse from "../Maps/House/HouseFunctions";
+import createGraveyard from "../Maps/Graveyard/GraveyardFunctions";
 import { connect } from "react-redux";
+import Pusher from 'pusher-js';
 import Node from "../Node/Node";
 import {
   makeStreetGrid,
   makeForestGrid,
   makeHouseGrid,
   makeGraveyardGrid,
-  moveThePlayer
+  moveThePlayer,
+  sendMessage
 } from "../../store/actions/gridActions";
 import characterOne from "../Node/images/character_one.png";
 import characterTwo from "../Node/images/character_two.png";
@@ -17,15 +25,61 @@ import characterFour from "../Node/images/character_four.png";
 import characterFive from "../Node/images/character_five.png";
 
 // eslint-disable-next-line
+let playerPosition;
 
 class MainGame extends React.Component {
-  componentDidMount = () => {
-    this.createForest();
+  constructor(props) {
+    super(props)
 
+    this.state = {
+      text: '',
+      chats: [],
+      currentRoom: null
+    }
+  }
+
+  componentWillMount = () => {
+    this.createForest();
+  }
+
+  componentDidMount = () => {
     window.addEventListener("keydown", e => {
       this.handleKeyDown(e);
     });
   };
+
+  componentDidUpdate = (prevProps) => {
+    if (prevProps.currentRoom !== this.props.currentRoom) {
+      this.setState({ currentRoom: this.props.currentRoom })
+      const pusher = new Pusher('f2df1cd773bc785afe1e', {
+        cluster: 'eu',
+        forceTLS: true,
+        encrypted: true
+      });
+      console.log('mudroom-'+this.props.currentRoom.title)
+      const channel = pusher.subscribe('mudroom-'+this.props.currentRoom.title);
+      channel.bind('message', data => {
+        this.setState({ chats: [...this.state.chats, data] })
+      });
+    }
+  }
+
+  handleTextChange = (e) => {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      const payload = {
+        room: this.props.currentRoom.title,
+        username: this.props.currentRoom.name,
+        message: this.state.text
+      };
+      this.setState({ text: '' })
+      this.props.sendMessage(payload)
+    } else {
+      this.setState({ text: e.target.value });
+    }
+  }
+
+
 
   handleKeyDown = e => {
     switch (e.keyCode) {
@@ -35,17 +89,31 @@ class MainGame extends React.Component {
           const positionDown = this.props.grid[this.props.playerPosition.i + 1][
             this.props.playerPosition.j
           ];
+          // if (positionDown.toForest) {
+          //   this.createForest();
+          // }
+          // if (positionDown.toHouse) {
+          //   this.createHouse();
+          // }
+          // if (positionDown.toGraveyard) {
+          //   this.createGraveyard();
+          // }
+          // if (positionDown.exitStreet) {
+          //   this.createStreet();
+          // }
           if (
-            this.props.playerPosition.s_to !== 0 &&
+            this.props.playerPosition.s_to !== 0
+             &&
             !positionDown.treeOne &&
             !positionDown.treeTwo &&
-            !positionDown.treeThree &&
-            !positionDown.skeleton &&
-            !positionDown.grave &&
-            !positionDown.goldOne &&
-            !positionDown.goldStatue
+            !positionDown.treeThree
           ) {
-            this.props.moveThePlayer("s");
+            const newGrid = this.movePlayer(
+              this.props.grid,
+              this.props.playerPosition.i + 1,
+              this.props.playerPosition.j
+            );
+            this.props.moveThePlayer(newGrid, positionDown, "s");
           }
           return;
         }
@@ -56,17 +124,21 @@ class MainGame extends React.Component {
           const positionLeft = this.props.grid[this.props.playerPosition.i][
             this.props.playerPosition.j - 1
           ];
+          // if (positionLeft.toForest) {
+          //   this.createForest();
+          // }
           if (
             this.props.playerPosition.w_to !== 0 && // .neighbors.includes(positionLeft) was old code
             !positionLeft.treeOne &&
             !positionLeft.treeTwo &&
-            !positionLeft.treeThree &&
-            !positionLeft.skeleton &&
-            !positionLeft.grave &&
-            !positionLeft.goldOne &&
-            !positionLeft.goldStatue
+            !positionLeft.treeThree
           ) {
-            this.props.moveThePlayer("w");
+            const newGrid = this.movePlayer(
+              this.props.grid,
+              this.props.playerPosition.i,
+              this.props.playerPosition.j - 1
+            );
+            this.props.moveThePlayer(newGrid, positionLeft, "w");
           }
           return;
         }
@@ -77,17 +149,27 @@ class MainGame extends React.Component {
           const positionRight = this.props.grid[this.props.playerPosition.i][
             this.props.playerPosition.j + 1
           ];
+          // if (positionRight.toForest) {
+          //   this.createForest();
+          // }
+          // if (positionRight.toStreet) {
+          //   this.createStreet();
+          // }
+          // if (positionRight.toGraveyard) {
+          //   this.createGraveyard();
+          // }
           if (
             this.props.playerPosition.e_to !== 0 &&
             !positionRight.treeOne &&
             !positionRight.treeTwo &&
-            !positionRight.treeThree &&
-            !positionRight.skeleton &&
-            !positionRight.grave &&
-            !positionRight.goldOne &&
-            !positionRight.goldStatue
+            !positionRight.treeThree
           ) {
-            this.props.moveThePlayer("e");
+            const newGrid = this.movePlayer(
+              this.props.grid,
+              this.props.playerPosition.i,
+              this.props.playerPosition.j + 1
+            );
+            this.props.moveThePlayer(newGrid, positionRight, "e");
           }
           return;
         }
@@ -98,17 +180,21 @@ class MainGame extends React.Component {
           const positionUp = this.props.grid[this.props.playerPosition.i - 1][
             this.props.playerPosition.j
           ];
+          // if (positionUp.toStreet) {
+          //   this.createStreet();
+          // }
           if (
             this.props.playerPosition.n_to !== 0 &&
             !positionUp.treeOne &&
             !positionUp.treeTwo &&
-            !positionUp.treeThree &&
-            !positionUp.skeleton &&
-            !positionUp.grave &&
-            !positionUp.goldOne &&
-            !positionUp.goldStatue
+            !positionUp.treeThree
           ) {
-            this.props.moveThePlayer("n");
+            const newGrid = this.movePlayer(
+              this.props.grid,
+              this.props.playerPosition.i - 1,
+              this.props.playerPosition.j
+            );
+            this.props.moveThePlayer(newGrid, positionUp, "n");
           }
           return;
         }
@@ -123,15 +209,27 @@ class MainGame extends React.Component {
   };
 
   createStreet = () => {
-    this.props.makeStreetGrid();
+    const streetGrid = createStreet([]);
+    this.props.makeStreetGrid(streetGrid);
+    grid = streetGrid;
+    playerPosition = grid[0][0];
+    document.querySelector(".grid").style.backgroundImage = `url(${street})`;
   };
 
   createHouse = () => {
-    this.props.makeHouseGrid();
+    const houseGrid = createHouse([]);
+    this.props.makeHouseGrid(houseGrid);
+    grid = houseGrid;
+    playerPosition = grid[0][0];
+    document.querySelector(".grid").style.backgroundImage = `url(${wood})`;
   };
 
   createGraveyard = () => {
-    this.props.makeGraveyardGrid();
+    const graveyardGrid = createGraveyard([]);
+    this.props.makeGraveyardGrid(graveyardGrid);
+    grid = graveyardGrid;
+    playerPosition = grid[0][0];
+    document.querySelector(".grid").style.backgroundImage = `url(${img})`;
   };
 
   movePlayer = (grid, i, j) => {
@@ -144,7 +242,7 @@ class MainGame extends React.Component {
 
   render() {
     if (this.props.grid) {
-      console.log(this.props.grid);
+      // console.log(this.props.grid);
     }
     return (
       <StyledMainGame>
@@ -203,22 +301,27 @@ class MainGame extends React.Component {
           </tbody>
         </table>
         <div className="game-info">
-          <div className="room-info">
-            <p>
-              Room {this.props.playerPosition ? this.props.playerPosition.title : ""}
-            </p>
-            <h5>
-              <u>Roommates</u>
-            </h5>
-            <ul>
-              {this.props.players
-                ? this.props.players.map(player => {
-                    return <li>{player}</li>;
-                  })
-                : ""}
-            </ul>
-          </div>
-          <div className="chat-space"></div>
+              <div className="room-info">
+                <p>Room {this.props.currentRoom ? this.props.currentRoom.title: ''}</p>
+                <h5><u>Roommates</u></h5>
+                <ul>
+                {this.props.currentRoom ? this.props.currentRoom.players.map((player, index) => {
+                  return <li key={index}>{player}</li>
+                }) : ''}
+                </ul>
+              </div>
+              <div className="chat-space">
+                <div className="message-view">
+                  {this.state.chats ? this.state.chats.map((chat, index) => {
+                    return <div key={index}><span>{chat.username}:</span> <span>{chat.message}</span></div>
+                  }): ''}
+                </div>
+                <div className="input-field">
+                  <form>
+                    <input value={this.state.text} onChange={this.handleTextChange} onKeyDown={this.handleTextChange}/>
+                  </form>
+                </div>
+              </div>
         </div>
       </StyledMainGame>
     );
@@ -273,6 +376,32 @@ const StyledMainGame = styled.div`
       min-height: 250px;
       height: auto;
       box-shadow: 0px 1.87781px 6.25935px rgba(0, 0, 0, 2.06);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px;
+
+      .message-view {
+        border: 1px solid white;
+        background: #fff;
+        flex: 1
+        padding: 10px;
+
+        span {
+          color: black;
+          font-size: 12px;
+        }
+      }
+
+      .input-field {
+        margin-top: 20px;
+        input {
+          padding: 5px;
+        }
+        button {
+          padding: 5px;
+        }
+      }
     }
   }
 
@@ -289,12 +418,13 @@ const StyledMainGame = styled.div`
   }
 `;
 
+
 const mapStateToProps = state => {
   return {
     grid: state.grid.grid,
     playerPosition: state.grid.playerPosition,
     character: state.character.character,
-    players: state.grid.players
+    currentRoom: state.grid.currentRoom
   };
 };
 
@@ -305,9 +435,11 @@ export default connect(
     makeStreetGrid,
     makeHouseGrid,
     makeGraveyardGrid,
-    moveThePlayer
+    moveThePlayer,
+    sendMessage
   }
 )(MainGame);
 
 const rows = 10;
 const cols = 10;
+let grid;
