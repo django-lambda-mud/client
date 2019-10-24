@@ -7,8 +7,9 @@ export const MAKE_HOUSE_GRID = "MAKE_HOUSE_GRID";
 export const MAKE_GRAVEYARD_GRID = "MAKE_GRAVEYARD_GRID";
 
 export const MOVE_PLAYER = "MOVE_PLAYER";
+export const ROOM_INFO = "ROOM_INFO";
 
-export const genericAction = (type, payload, roomTitle, playerPosition) => ({
+export const genericAction = (type, payload, roomTitle) => ({
   type,
   payload,
   roomTitle

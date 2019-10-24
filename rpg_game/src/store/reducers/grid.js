@@ -7,7 +7,8 @@ const initialState = {
   grid: null,
   playerPosition: null,
   loading: null,
-  error: null
+  error: null,
+  currentRoom: null,
 };
 
 const rows = 10;
@@ -15,6 +16,13 @@ const cols = 10;
 
 const grid = (state = initialState, action) => {
   switch (action.type) {
+    // case type.ROOM_INFO:
+    //   return {
+    //     ...state,
+    //     currentRoom: action.payload,
+    //   }
+      
+
     case type.MAKE_FOREST_GRID:
       let rooms = action.payload;
 

@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import grass from "./images/grass.png";
-import wood from "./images/wood.png";
-import street from "./images/street.png";
+import img from "./images/atmosphere-blue-clouds-2531709.jpg";
 import { connect } from "react-redux";
 import Node from "../Node/Node";
 import {
@@ -18,25 +16,7 @@ import characterThree from "../Node/images/character_three.png";
 import characterFour from "../Node/images/character_four.png";
 import characterFive from "../Node/images/character_five.png";
 
-const StyledMainGame = styled.div`
-  display: flex;
-
-  .grid {
-    background-image: url(${grass});
-  }
-
-  .node {
-    width: 4rem;
-    height: 4rem;
-  }
-
-  .node-child {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-position: 0 0;
-  }
-`;
+// eslint-disable-next-line
 
 class MainGame extends React.Component {
   componentDidMount = () => {
@@ -59,7 +39,11 @@ class MainGame extends React.Component {
             this.props.playerPosition.s_to !== 0 &&
             !positionDown.treeOne &&
             !positionDown.treeTwo &&
-            !positionDown.treeThree
+            !positionDown.treeThree &&
+            !positionDown.skeleton &&
+            !positionDown.grave &&
+            !positionDown.goldOne &&
+            !positionDown.goldStatue
           ) {
             this.props.moveThePlayer("s");
           }
@@ -76,7 +60,11 @@ class MainGame extends React.Component {
             this.props.playerPosition.w_to !== 0 && // .neighbors.includes(positionLeft) was old code
             !positionLeft.treeOne &&
             !positionLeft.treeTwo &&
-            !positionLeft.treeThree
+            !positionLeft.treeThree &&
+            !positionLeft.skeleton &&
+            !positionLeft.grave &&
+            !positionLeft.goldOne &&
+            !positionLeft.goldStatue
           ) {
             this.props.moveThePlayer("w");
           }
@@ -93,7 +81,11 @@ class MainGame extends React.Component {
             this.props.playerPosition.e_to !== 0 &&
             !positionRight.treeOne &&
             !positionRight.treeTwo &&
-            !positionRight.treeThree
+            !positionRight.treeThree &&
+            !positionRight.skeleton &&
+            !positionRight.grave &&
+            !positionRight.goldOne &&
+            !positionRight.goldStatue
           ) {
             this.props.moveThePlayer("e");
           }
@@ -110,7 +102,11 @@ class MainGame extends React.Component {
             this.props.playerPosition.n_to !== 0 &&
             !positionUp.treeOne &&
             !positionUp.treeTwo &&
-            !positionUp.treeThree
+            !positionUp.treeThree &&
+            !positionUp.skeleton &&
+            !positionUp.grave &&
+            !positionUp.goldOne &&
+            !positionUp.goldStatue
           ) {
             this.props.moveThePlayer("n");
           }
@@ -124,22 +120,18 @@ class MainGame extends React.Component {
 
   createForest = () => {
     this.props.makeForestGrid();
-    document.querySelector(".grid").style.backgroundImage = `url(${grass})`;
   };
 
   createStreet = () => {
     this.props.makeStreetGrid();
-    document.querySelector(".grid").style.backgroundImage = `url(${street})`;
   };
 
   createHouse = () => {
     this.props.makeHouseGrid();
-    document.querySelector(".grid").style.backgroundImage = `url(${wood})`;
   };
 
   createGraveyard = () => {
     this.props.makeGraveyardGrid();
-    document.querySelector(".grid").style.backgroundImage = `url(${grass})`;
   };
 
   movePlayer = (grid, i, j) => {
@@ -210,16 +202,99 @@ class MainGame extends React.Component {
               : null}
           </tbody>
         </table>
+        <div className="game-info">
+          <div className="room-info">
+            <p>
+              Room {this.props.currentRoom ? this.props.currentRoom.title : ""}
+            </p>
+            <h5>
+              <u>Roommates</u>
+            </h5>
+            <ul>
+              {this.props.currentRoom
+                ? this.props.currentRoom.players.map(player => {
+                    return <li>{player}</li>;
+                  })
+                : ""}
+            </ul>
+          </div>
+          <div className="chat-space"></div>
+        </div>
       </StyledMainGame>
     );
   }
 }
 
+const StyledMainGame = styled.div`
+  background-image: url(${img});
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  padding: 40px;
+  display: flex;
+  justify-content: space-around;
+
+  .grid {
+    border: 5px solid #01134c;
+    margin: 20px;
+    width: 70%;
+    box-shadow: 0px 1.87781px 6.25935px rgba(0, 0, 0, 2.06);
+  }
+
+  .game-info {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+
+    .room-info {
+      padding: 10px;
+      border: 2px solid #01134c;
+      width: 100%;
+      min-height: 250px;
+      height: auto;
+      margin-bottom: 30px;
+      box-shadow: 0px 1.87781px 6.25935px rgba(0, 0, 0, 2.06);
+
+      h5 {
+        margin-top: 30px;
+        color: #fff;
+        font-size: 20px;
+      }
+
+      li {
+        margin-top: 10px;
+        color: #fff;
+        font-size: 13px;
+      }
+    }
+
+    .chat-space {
+      border: 2px solid #01134c;
+      width: 100%;
+      min-height: 250px;
+      height: auto;
+      box-shadow: 0px 1.87781px 6.25935px rgba(0, 0, 0, 2.06);
+    }
+  }
+
+  .node {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .node-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-position: 0 0;
+  }
+`;
+
 const mapStateToProps = state => {
   return {
     grid: state.grid.grid,
     playerPosition: state.grid.playerPosition,
-    character: state.character.character
+    character: state.character.character,
+    currentRoom: state.grid.currentRoom
   };
 };
 
