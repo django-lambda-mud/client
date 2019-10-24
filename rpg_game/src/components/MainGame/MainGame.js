@@ -1,12 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import img from "./images/atmosphere-blue-clouds-2531709.jpg";
-import wood from "./images/wood.png";
-import street from "./images/street.png";
-// import createForest from "../Maps/Forest/ForestFunctions";
-import createStreet from "../Maps/Street/StreetFunctions";
-import createHouse from "../Maps/House/HouseFunctions";
-import createGraveyard from "../Maps/Graveyard/GraveyardFunctions";
 import { connect } from "react-redux";
 import Node from "../Node/Node";
 import {
@@ -23,11 +17,9 @@ import characterFour from "../Node/images/character_four.png";
 import characterFive from "../Node/images/character_five.png";
 
 // eslint-disable-next-line
-let playerPosition;
 
 class MainGame extends React.Component {
   componentDidMount = () => {
-    // this.props.makeForestGrid();
     this.createForest();
 
     window.addEventListener("keydown", e => {
@@ -43,31 +35,17 @@ class MainGame extends React.Component {
           const positionDown = this.props.grid[this.props.playerPosition.i + 1][
             this.props.playerPosition.j
           ];
-          // if (positionDown.toForest) {
-          //   this.createForest();
-          // }
-          // if (positionDown.toHouse) {
-          //   this.createHouse();
-          // }
-          // if (positionDown.toGraveyard) {
-          //   this.createGraveyard();
-          // }
-          // if (positionDown.exitStreet) {
-          //   this.createStreet();
-          // }
           if (
-            this.props.playerPosition.s_to !== 0
-             &&
+            this.props.playerPosition.s_to !== 0 &&
             !positionDown.treeOne &&
             !positionDown.treeTwo &&
-            !positionDown.treeThree
+            !positionDown.treeThree &&
+            !positionDown.skeleton &&
+            !positionDown.grave &&
+            !positionDown.goldOne &&
+            !positionDown.goldStatue
           ) {
-            const newGrid = this.movePlayer(
-              this.props.grid,
-              this.props.playerPosition.i + 1,
-              this.props.playerPosition.j
-            );
-            this.props.moveThePlayer(newGrid, positionDown, "s");
+            this.props.moveThePlayer("s");
           }
           return;
         }
@@ -78,21 +56,17 @@ class MainGame extends React.Component {
           const positionLeft = this.props.grid[this.props.playerPosition.i][
             this.props.playerPosition.j - 1
           ];
-          // if (positionLeft.toForest) {
-          //   this.createForest();
-          // }
           if (
             this.props.playerPosition.w_to !== 0 && // .neighbors.includes(positionLeft) was old code
             !positionLeft.treeOne &&
             !positionLeft.treeTwo &&
-            !positionLeft.treeThree
+            !positionLeft.treeThree &&
+            !positionLeft.skeleton &&
+            !positionLeft.grave &&
+            !positionLeft.goldOne &&
+            !positionLeft.goldStatue
           ) {
-            const newGrid = this.movePlayer(
-              this.props.grid,
-              this.props.playerPosition.i,
-              this.props.playerPosition.j - 1
-            );
-            this.props.moveThePlayer(newGrid, positionLeft, "w");
+            this.props.moveThePlayer("w");
           }
           return;
         }
@@ -103,27 +77,17 @@ class MainGame extends React.Component {
           const positionRight = this.props.grid[this.props.playerPosition.i][
             this.props.playerPosition.j + 1
           ];
-          // if (positionRight.toForest) {
-          //   this.createForest();
-          // }
-          // if (positionRight.toStreet) {
-          //   this.createStreet();
-          // }
-          // if (positionRight.toGraveyard) {
-          //   this.createGraveyard();
-          // }
           if (
             this.props.playerPosition.e_to !== 0 &&
             !positionRight.treeOne &&
             !positionRight.treeTwo &&
-            !positionRight.treeThree
+            !positionRight.treeThree &&
+            !positionRight.skeleton &&
+            !positionRight.grave &&
+            !positionRight.goldOne &&
+            !positionRight.goldStatue
           ) {
-            const newGrid = this.movePlayer(
-              this.props.grid,
-              this.props.playerPosition.i,
-              this.props.playerPosition.j + 1
-            );
-            this.props.moveThePlayer(newGrid, positionRight, "e");
+            this.props.moveThePlayer("e");
           }
           return;
         }
@@ -134,21 +98,17 @@ class MainGame extends React.Component {
           const positionUp = this.props.grid[this.props.playerPosition.i - 1][
             this.props.playerPosition.j
           ];
-          // if (positionUp.toStreet) {
-          //   this.createStreet();
-          // }
           if (
             this.props.playerPosition.n_to !== 0 &&
             !positionUp.treeOne &&
             !positionUp.treeTwo &&
-            !positionUp.treeThree
+            !positionUp.treeThree &&
+            !positionUp.skeleton &&
+            !positionUp.grave &&
+            !positionUp.goldOne &&
+            !positionUp.goldStatue
           ) {
-            const newGrid = this.movePlayer(
-              this.props.grid,
-              this.props.playerPosition.i - 1,
-              this.props.playerPosition.j
-            );
-            this.props.moveThePlayer(newGrid, positionUp, "n");
+            this.props.moveThePlayer("n");
           }
           return;
         }
@@ -163,27 +123,15 @@ class MainGame extends React.Component {
   };
 
   createStreet = () => {
-    const streetGrid = createStreet([]);
-    this.props.makeStreetGrid(streetGrid);
-    grid = streetGrid;
-    playerPosition = grid[0][0];
-    document.querySelector(".grid").style.backgroundImage = `url(${street})`;
+    this.props.makeStreetGrid();
   };
 
   createHouse = () => {
-    const houseGrid = createHouse([]);
-    this.props.makeHouseGrid(houseGrid);
-    grid = houseGrid;
-    playerPosition = grid[0][0];
-    document.querySelector(".grid").style.backgroundImage = `url(${wood})`;
+    this.props.makeHouseGrid();
   };
 
   createGraveyard = () => {
-    const graveyardGrid = createGraveyard([]);
-    this.props.makeGraveyardGrid(graveyardGrid);
-    grid = graveyardGrid;
-    playerPosition = grid[0][0];
-    document.querySelector(".grid").style.backgroundImage = `url(${img})`;
+    this.props.makeGraveyardGrid();
   };
 
   movePlayer = (grid, i, j) => {
@@ -255,19 +203,22 @@ class MainGame extends React.Component {
           </tbody>
         </table>
         <div className="game-info">
-              <div className="room-info">
-                <p>Room {this.props.currentRoom ? this.props.currentRoom.title: ''}</p>
-                <h5><u>Roommates</u></h5>
-                <ul>
-                {this.props.currentRoom ? this.props.currentRoom.players.map((player) => {
-                  return <li>{player}</li>
-                }) : ''}
-                </ul>
-              </div>
-              <div className="chat-space">
-
-                
-              </div>
+          <div className="room-info">
+            <p>
+              Room {this.props.playerPosition ? this.props.playerPosition.title : ""}
+            </p>
+            <h5>
+              <u>Roommates</u>
+            </h5>
+            <ul>
+              {this.props.players
+                ? this.props.players.map(player => {
+                    return <li>{player}</li>;
+                  })
+                : ""}
+            </ul>
+          </div>
+          <div className="chat-space"></div>
         </div>
       </StyledMainGame>
     );
@@ -338,13 +289,12 @@ const StyledMainGame = styled.div`
   }
 `;
 
-
 const mapStateToProps = state => {
   return {
     grid: state.grid.grid,
     playerPosition: state.grid.playerPosition,
     character: state.character.character,
-    currentRoom: state.grid.currentRoom
+    players: state.grid.players
   };
 };
 
@@ -361,4 +311,3 @@ export default connect(
 
 const rows = 10;
 const cols = 10;
-let grid;

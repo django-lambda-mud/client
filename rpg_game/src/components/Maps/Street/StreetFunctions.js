@@ -1,7 +1,7 @@
 const rows = 10;
-const cols = 15;
+const cols = 10;
 
-const createStreet = (grid) => {
+const createStreet = grid => {
   for (let i = 0; i < rows; i++) {
     const currentRow = [];
     for (let j = 0; j < cols; j++) {
@@ -26,8 +26,8 @@ const createNode = (i, j) => {
     start: i === 0 && j === 0, // create start point
     neighbors: [],
     goldStatue:
-      (i === 9 && j === 14) || (i === 0 && j === 14) || (i === 9 && j === 0),
-    skeleton: i === 5 && j === 7,
+      (i === 9 && j === 9) || (i === 0 && j === 9) || (i === 9 && j === 0),
+    skeleton: (i === 5 && j === 7) || (i === 9 && j === 7),
     toForest: i === 9 && j === 8
   };
 };

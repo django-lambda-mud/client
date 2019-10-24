@@ -1,7 +1,7 @@
 const rows = 10;
 const cols = 15;
 
-const createHouse = (grid) => {
+const createHouse = grid => {
   for (let i = 0; i < rows; i++) {
     const currentRow = [];
     for (let j = 0; j < cols; j++) {
@@ -28,9 +28,27 @@ const createNode = (i, j) => {
     neighbors: [],
     smallCabinet: i === 0 && j === 14,
     mediumCabinet: (i === 9 && j === 3) || (i === 9 && j === 9),
-    bigCabinet: (i === 0 && j === 6)|| (i === 0 && j === 7) || (i === 0 && j === 8) || (i === 0 && j === 9) || (i === 0 && j === 10) || (i === 0 && j === 11),
+    bigCabinet:
+      (i === 0 && j === 6) ||
+      (i === 0 && j === 7) ||
+      (i === 0 && j === 8) ||
+      (i === 0 && j === 9) ||
+      (i === 0 && j === 10) ||
+      (i === 0 && j === 11),
     chair: i === 5 && j === 7,
-    carpet: (i === 4 && j === 12) || (i === 3 && j === 12) || (i === 4 && j === 11) || (i === 3 && j === 11) || (i === 2 && j === 2) || (i === 3 && j === 2) || (i === 2 && j === 3) || (i === 3 && j === 3) || (i === 8 && j === 8) || (i === 8 && j === 9) || (i === 7 && j === 8) || (i === 7 && j === 9),
+    carpet:
+      (i === 4 && j === 12) ||
+      (i === 3 && j === 12) ||
+      (i === 4 && j === 11) ||
+      (i === 3 && j === 11) ||
+      (i === 2 && j === 2) ||
+      (i === 3 && j === 2) ||
+      (i === 2 && j === 3) ||
+      (i === 3 && j === 3) ||
+      (i === 8 && j === 8) ||
+      (i === 8 && j === 9) ||
+      (i === 7 && j === 8) ||
+      (i === 7 && j === 9),
     toGraveyard: i === 9 && j === 14
     // add other neccessary key value pairs for more functionality
   };
