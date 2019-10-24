@@ -16,20 +16,19 @@ export const genericAction = (type, payload, roomTitle, playerPosition) => ({
 
 const url = "http://127.0.0.1:8000/api/adv";
 
-export const makeForestGrid = (startOfGame, direction) => dispatch => {
-  if (startOfGame) {
-    // we must check if the game starts and initialize else we make normal get request
-    axiosWithAuth()
+export const makeForestGrid = (playerPosition, direction) => dispatch => {
+let currentPosition;
+  axiosWithAuth()
       .get(`${url}/init/`)
       .then(res => {
-        dispatch(genericAction(MAKE_FOREST_GRID, res.data.rooms));
+        currentPosition = res.data.title;
+        return axios.get(`${url}/rooms/`).then(res => {
+          debugger
+          dispatch(genericAction(MAKE_FOREST_GRID, res.data.rooms, currentPosition));
+          // setTimeout(() => moveThePlayer(playerPosition,direction), 1000) // we also must update the movement if we are currently in the game
+        });
       });
-  } else {
-    axios.get(`${url}/rooms/`).then(res => {
-      dispatch(genericAction(MAKE_FOREST_GRID, res.data.rooms));
-      setTimeout(() => , 1000) // we also must update the movement if we are currently in the game
-    });
-  }
+ 
 };
 
 export const makeStreetGrid = () => dispatch => {
@@ -47,7 +46,6 @@ export const makeGraveyardGrid = graveyardGrid => {
 };
 
 export const moveThePlayer = (
-  playerPosition,
   direction
 ) => dispatch => {
   const reqBody = { direction: direction };
@@ -55,6 +53,6 @@ export const moveThePlayer = (
   axiosWithAuth()
     .post(`${url}/move/`, reqBody)
     .then(res => {
-      dispatch(genericAction(MOVE_PLAYER, playerPosition, res.title));
+      dispatch(genericAction(MOVE_PLAYER, res.data.title));
     });
 };

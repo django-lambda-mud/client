@@ -40,7 +40,7 @@ const StyledMainGame = styled.div`
 
 class MainGame extends React.Component {
   componentDidMount = () => {
-    this.createForest("startOfGame");
+    this.createForest();
 
     window.addEventListener("keydown", e => {
       this.handleKeyDown(e);
@@ -74,12 +74,7 @@ class MainGame extends React.Component {
             !positionDown.treeTwo &&
             !positionDown.treeThree
           ) {
-            const newGrid = this.movePlayer(
-              this.props.grid,
-              this.props.playerPosition.i + 1,
-              this.props.playerPosition.j
-            );
-            this.props.moveThePlayer(newGrid, positionDown, "s");
+            this.props.moveThePlayer("s");
           }
           return;
         }
@@ -99,12 +94,7 @@ class MainGame extends React.Component {
             !positionLeft.treeTwo &&
             !positionLeft.treeThree
           ) {
-            const newGrid = this.movePlayer(
-              this.props.grid,
-              this.props.playerPosition.i,
-              this.props.playerPosition.j - 1
-            );
-            this.props.moveThePlayer(newGrid, positionLeft, "w");
+            this.props.moveThePlayer("w");
           }
           return;
         }
@@ -130,12 +120,7 @@ class MainGame extends React.Component {
             !positionRight.treeTwo &&
             !positionRight.treeThree
           ) {
-            const newGrid = this.movePlayer(
-              this.props.grid,
-              this.props.playerPosition.i,
-              this.props.playerPosition.j + 1
-            );
-            this.props.moveThePlayer(newGrid, positionRight, "e");
+            this.props.moveThePlayer("e");
           }
           return;
         }
@@ -155,12 +140,7 @@ class MainGame extends React.Component {
             !positionUp.treeTwo &&
             !positionUp.treeThree
           ) {
-            const newGrid = this.movePlayer(
-              this.props.grid,
-              this.props.playerPosition.i - 1,
-              this.props.playerPosition.j
-            );
-            this.props.moveThePlayer(newGrid, positionUp, "n");
+            this.props.moveThePlayer("n");
           }
           return;
         }
