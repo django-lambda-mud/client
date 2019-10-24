@@ -55,21 +55,8 @@ class MainGame extends React.Component {
           const positionDown = this.props.grid[this.props.playerPosition.i + 1][
             this.props.playerPosition.j
           ];
-          if (positionDown.toForest) {
-            this.createForest();
-          }
-          if (positionDown.toHouse) {
-            this.createHouse();
-          }
-          if (positionDown.toGraveyard) {
-            this.createGraveyard();
-          }
-          if (positionDown.exitStreet) {
-            this.createStreet();
-          }
           if (
-            this.props.playerPosition.s_to !== 0
-             &&
+            this.props.playerPosition.s_to !== 0 &&
             !positionDown.treeOne &&
             !positionDown.treeTwo &&
             !positionDown.treeThree
@@ -85,9 +72,6 @@ class MainGame extends React.Component {
           const positionLeft = this.props.grid[this.props.playerPosition.i][
             this.props.playerPosition.j - 1
           ];
-          if (positionLeft.toForest) {
-            this.createForest();
-          }
           if (
             this.props.playerPosition.w_to !== 0 && // .neighbors.includes(positionLeft) was old code
             !positionLeft.treeOne &&
@@ -105,15 +89,6 @@ class MainGame extends React.Component {
           const positionRight = this.props.grid[this.props.playerPosition.i][
             this.props.playerPosition.j + 1
           ];
-          if (positionRight.toForest) {
-            this.createForest();
-          }
-          if (positionRight.toStreet) {
-            this.createStreet();
-          }
-          if (positionRight.toGraveyard) {
-            this.createGraveyard();
-          }
           if (
             this.props.playerPosition.e_to !== 0 &&
             !positionRight.treeOne &&
@@ -131,9 +106,6 @@ class MainGame extends React.Component {
           const positionUp = this.props.grid[this.props.playerPosition.i - 1][
             this.props.playerPosition.j
           ];
-          // if (positionUp.toStreet) {
-          //   this.createStreet();
-          // }
           if (
             this.props.playerPosition.n_to !== 0 &&
             !positionUp.treeOne &&

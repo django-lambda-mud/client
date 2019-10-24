@@ -32,7 +32,6 @@ const grid = (state = initialState, action) => {
       }
 
       rooms = result[0];
-      debugger;
       let grid = [];
       let tempArray = [];
       let keepTrackOfIndex = 9;
@@ -69,15 +68,12 @@ const grid = (state = initialState, action) => {
           grid[i][j].grave = forest[i][j].grave;
           grid[i][j].goldOne = forest[i][j].goldOne;
           grid[i][j].toStreet = forest[i][j].toStreet;
-          grid[i][j].toHouse = forest[i][j].toHouse;
         }
       }
 
-      // you must change in the double loop the start(player) boolean
-      // check with the currentTitle(position  of gamer and make true else false)
-
       return {
         ...state,
+        maingrid: action.payload,
         grid: grid,
         playerPosition: keepTrackOfCurrentForestPosition
       };
@@ -103,7 +99,6 @@ const grid = (state = initialState, action) => {
       }
 
       allRooms = theResult[1];
-      debugger;
       let streetGrid = [];
       let tempStreetArray = [];
       let keepTrackOfStreetIndex = 9;
@@ -121,11 +116,17 @@ const grid = (state = initialState, action) => {
 
       const street = createStreet([]);
 
+      let keepTrackOfCurrentStreetPosition;
       for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
+          if (streetGrid[i][j].title === action.roomTitle) {
+            streetGrid[i][j].start = true;
+            keepTrackOfCurrentStreetPosition = streetGrid[i][j];
+          } else {
+            streetGrid[i][j].start = false;
+          }
           streetGrid[i][j].i = street[i][j].i;
           streetGrid[i][j].j = street[i][j].j;
-          streetGrid[i][j].start = street[i][j].start;
           streetGrid[i][j].neighbors = street[i][j].neighbors;
           streetGrid[i][j].skeleton = street[i][j].skeleton;
           streetGrid[i][j].goldStatue = street[i][j].goldStatue;
@@ -136,7 +137,7 @@ const grid = (state = initialState, action) => {
       return {
         ...state,
         grid: streetGrid,
-        playerPosition: streetGrid[0][0]
+        playerPosition: keepTrackOfCurrentStreetPosition
       };
 
     case type.MAKE_HOUSE_GRID:
@@ -152,6 +153,7 @@ const grid = (state = initialState, action) => {
       };
 
     case type.MOVE_PLAYER:
+
       let currentGrid = [...state.grid];
 
       let keepTrackOfCurrentPosition;
@@ -165,7 +167,7 @@ const grid = (state = initialState, action) => {
           }
         }
       }
-
+   
       return {
         ...state,
         grid: currentGrid,
