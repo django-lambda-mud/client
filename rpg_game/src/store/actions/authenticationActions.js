@@ -2,7 +2,7 @@ import axios from "axios";
 // eslint-disable-next-line
 import { axiosWithAuth } from "../axiosWithAuth";
 
-const appURL = " https://muddyapp.herokuapp.com";
+const appURL = "https://muddyapp.herokuapp.com";
 
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";

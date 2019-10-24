@@ -18,6 +18,10 @@ export const genericAction = (type, payload, roomTitle, playerPosition) => ({
 
 const url = "https://muddyapp.herokuapp.com/api/adv";
 
+export const sendMessage = (payload) => dispatch => {
+  axios.post(`${url}/say`, payload)
+}
+
 export const makeForestGrid = () => dispatch =>  {
   axiosWithAuth().get(`${url}/init/`).then(res => {
     dispatch(genericAction(ROOM_INFO, res.data))
