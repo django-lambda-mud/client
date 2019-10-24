@@ -27,6 +27,12 @@ import characterFive from "../Node/images/character_five.png";
 // eslint-disable-next-line
 let playerPosition;
 
+const pusher = new Pusher('f2df1cd773bc785afe1e', {
+  cluster: 'eu',
+  forceTLS: true,
+  encrypted: true
+});
+
 class MainGame extends React.Component {
   constructor(props) {
     super(props)
@@ -48,15 +54,13 @@ class MainGame extends React.Component {
     });
   };
 
+  componentWillUnmount = () => {
+    pusher.unsubscribe('mudroom-'+this.props.currentRoom.title)
+  }
+
   componentDidUpdate = (prevProps) => {
     if (prevProps.currentRoom !== this.props.currentRoom) {
       this.setState({ currentRoom: this.props.currentRoom })
-      const pusher = new Pusher('f2df1cd773bc785afe1e', {
-        cluster: 'eu',
-        forceTLS: true,
-        encrypted: true
-      });
-      console.log('mudroom-'+this.props.currentRoom.title)
       const channel = pusher.subscribe('mudroom-'+this.props.currentRoom.title);
       channel.bind('message', data => {
         this.setState({ chats: [...this.state.chats, data] })
