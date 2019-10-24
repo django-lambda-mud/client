@@ -16,7 +16,7 @@ export const genericAction = (type, payload, roomTitle, playerPosition) => ({
   playerPosition
 });
 
-const url = "http://127.0.0.1:8000/api/adv";
+const url = "https://muddyapp.herokuapp.com/api/adv";
 
 export const makeForestGrid = () => dispatch =>  {
   axiosWithAuth().get(`${url}/init/`).then(res => {
