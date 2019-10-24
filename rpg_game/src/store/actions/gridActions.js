@@ -53,6 +53,7 @@ export const moveThePlayer = (
   axiosWithAuth()
     .post(`${url}/move/`, reqBody)
     .then(res => {
+      debugger
       dispatch(genericAction(MOVE_PLAYER, res.data.title));
     });
 };

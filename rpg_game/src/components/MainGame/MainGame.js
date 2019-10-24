@@ -131,9 +131,9 @@ class MainGame extends React.Component {
           const positionUp = this.props.grid[this.props.playerPosition.i - 1][
             this.props.playerPosition.j
           ];
-          if (positionUp.toStreet) {
-            this.createStreet();
-          }
+          // if (positionUp.toStreet) {
+          //   this.createStreet();
+          // }
           if (
             this.props.playerPosition.n_to !== 0 &&
             !positionUp.treeOne &&

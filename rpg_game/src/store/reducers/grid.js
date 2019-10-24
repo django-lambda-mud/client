@@ -3,6 +3,7 @@ import createForest from "../../components/Maps/Forest/ForestFunctions";
 import createStreet from "../../components/Maps/Street/StreetFunctions";
 
 const initialState = {
+  maingrid: [],
   grid: null,
   playerPosition: null,
   loading: null,
