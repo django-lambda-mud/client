@@ -111,6 +111,7 @@ const RegisterWrapper = styled.div`
         font-size: 13px;
         padding-left: 20px;
         font-weight: bold;
+        font-family: 'Antic', sans-serif;
 
         ::placeholder {
           color: #e1e2e6;

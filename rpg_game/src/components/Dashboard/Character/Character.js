@@ -8,7 +8,7 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import { chooseCharacter } from "../../../store/actions/characterActions";
 import { withRouter } from "react-router-dom";
-import img from '../../../assets/clouds-dark-lightning-1118869.jpg'
+import img from '../../../assets/atmosphere-blue-clouds-2531709.jpg'
 
 const StyledCharacter = styled.div`
   background-image: url(${img});
@@ -20,10 +20,13 @@ const StyledCharacter = styled.div`
   align-items: center;
   justify-content: center;
 
-  color: #fdf5b7;
+  color: #1e3290;
 
   .title {
     margin-bottom: 20px;
+    h1 {
+      font-family: 'Aldrich', sans-serif;
+    }
   }
 
   .actors {
