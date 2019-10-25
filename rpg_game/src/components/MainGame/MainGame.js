@@ -3,12 +3,12 @@ import styled from "styled-components";
 import img from "./images/atmosphere-blue-clouds-2531709.jpg";
 import wood from "./images/wood.png";
 import street from "./images/street.png";
-import createForest from "../Maps/Forest/ForestFunctions";
+// import createForest from "../Maps/Forest/ForestFunctions";
 import createStreet from "../Maps/Street/StreetFunctions";
 import createHouse from "../Maps/House/HouseFunctions";
 import createGraveyard from "../Maps/Graveyard/GraveyardFunctions";
 import { connect } from "react-redux";
-import Pusher from 'pusher-js';
+import Pusher from "pusher-js";
 import Node from "../Node/Node";
 import {
   makeStreetGrid,
@@ -18,6 +18,7 @@ import {
   moveThePlayer,
   sendMessage
 } from "../../store/actions/gridActions";
+import { doLogOut } from "../../store/actions/authenticationActions";
 import characterOne from "../Node/images/character_one.png";
 import characterTwo from "../Node/images/character_two.png";
 import characterThree from "../Node/images/character_three.png";
@@ -27,26 +28,26 @@ import characterFive from "../Node/images/character_five.png";
 // eslint-disable-next-line
 let playerPosition;
 
-const pusher = new Pusher('f2df1cd773bc785afe1e', {
-  cluster: 'eu',
+const pusher = new Pusher("f2df1cd773bc785afe1e", {
+  cluster: "eu",
   forceTLS: true,
   encrypted: true
 });
 
 class MainGame extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
-      text: '',
+      text: "",
       chats: [],
       currentRoom: null
-    }
+    };
   }
 
   componentWillMount = () => {
     this.createForest();
-  }
+  };
 
   componentDidMount = () => {
     window.addEventListener("keydown", e => {
@@ -55,20 +56,22 @@ class MainGame extends React.Component {
   };
 
   componentWillUnmount = () => {
-    pusher.unsubscribe('mudroom-'+this.props.currentRoom.title)
-  }
+    this.props.currentRoom && pusher.unsubscribe("mudroom-" + this.props.currentRoom.title);
+  };
 
-  componentDidUpdate = (prevProps) => {
+  componentDidUpdate = prevProps => {
     if (prevProps.currentRoom !== this.props.currentRoom) {
-      this.setState({ currentRoom: this.props.currentRoom })
-      const channel = pusher.subscribe('mudroom-'+this.props.currentRoom.title);
-      channel.bind('message', data => {
-        this.setState({ chats: [...this.state.chats, data] })
+      this.setState({ currentRoom: this.props.currentRoom });
+      const channel = pusher.subscribe(
+        "mudroom-" + this.props.currentRoom.title
+      );
+      channel.bind("message", data => {
+        this.setState({ chats: [...this.state.chats, data] });
       });
     }
-  }
+  };
 
-  handleTextChange = (e) => {
+  handleTextChange = e => {
     if (e.keyCode === 13) {
       e.preventDefault();
       const payload = {
@@ -76,14 +79,12 @@ class MainGame extends React.Component {
         username: this.props.currentRoom.name,
         message: this.state.text
       };
-      this.setState({ text: '' })
-      this.props.sendMessage(payload)
+      this.setState({ text: "" });
+      this.props.sendMessage(payload);
     } else {
       this.setState({ text: e.target.value });
     }
-  }
-
-
+  };
 
   handleKeyDown = e => {
     switch (e.keyCode) {
@@ -106,8 +107,7 @@ class MainGame extends React.Component {
           //   this.createStreet();
           // }
           if (
-            this.props.playerPosition.s_to !== 0
-             &&
+            this.props.playerPosition.s_to !== 0 &&
             !positionDown.treeOne &&
             !positionDown.treeTwo &&
             !positionDown.treeThree
@@ -250,7 +250,9 @@ class MainGame extends React.Component {
     }
     return (
       <StyledMainGame>
+        <button onClick={this.props.doLogOut}>Logout</button>
         <table className="grid">
+          
           <tbody>
             {this.props.grid
               ? this.props.grid.map((item, i) => {
@@ -305,27 +307,45 @@ class MainGame extends React.Component {
           </tbody>
         </table>
         <div className="game-info">
-              <div className="room-info">
-                <p>Room {this.props.currentRoom ? this.props.currentRoom.title: ''}</p>
-                <h5><u>Roommates</u></h5>
-                <ul>
-                {this.props.currentRoom ? this.props.currentRoom.players.map((player, index) => {
-                  return <li key={index}>{player}</li>
-                }) : ''}
-                </ul>
-              </div>
-              <div className="chat-space">
-                <div className="message-view">
-                  {this.state.chats ? this.state.chats.map((chat, index) => {
-                    return <div key={index}><span>{chat.username}:</span> <span>{chat.message}</span></div>
-                  }): ''}
-                </div>
-                <div className="input-field">
-                  <form>
-                    <input placeholder="chat with roomates" value={this.state.text} onChange={this.handleTextChange} onKeyDown={this.handleTextChange}/>
-                  </form>
-                </div>
-              </div>
+          <div className="room-info">
+            <p>
+              Room {this.props.currentRoom ? this.props.currentRoom.title : ""}
+            </p>
+            <h5>
+              <u>Roommates</u>
+            </h5>
+            <ul>
+              {this.props.currentRoom
+                ? this.props.currentRoom.players.map((player, index) => {
+                    return <li key={index}>{player}</li>;
+                  })
+                : ""}
+            </ul>
+          </div>
+          <div className="chat-space">
+            <div className="message-view">
+              {this.state.chats
+                ? this.state.chats.map((chat, index) => {
+                    return (
+                      <div key={index}>
+                        <span>{chat.username}:</span>{" "}
+                        <span>{chat.message}</span>
+                      </div>
+                    );
+                  })
+                : ""}
+            </div>
+            <div className="input-field">
+              <form>
+                <input
+                  placeholder="chat with roomates"
+                  value={this.state.text}
+                  onChange={this.handleTextChange}
+                  onKeyDown={this.handleTextChange}
+                />
+              </form>
+            </div>
+          </div>
         </div>
       </StyledMainGame>
     );
@@ -339,6 +359,20 @@ const StyledMainGame = styled.div`
   padding: 40px;
   display: flex;
   justify-content: space-around;
+  
+  button {
+    position: fixed;
+    top: 2rem;
+    right: 5rem;
+    margin: auto;
+    border: .5px solid white;
+    border-radius: 5px;
+    background-color: #020011;
+    padding: .75rem 1.5rem;
+    color: #e1e2e6;
+    font-weight: bold;
+    cursor: pointer;
+  }
 
   .grid {
     border: 5px solid #01134c;
@@ -348,6 +382,7 @@ const StyledMainGame = styled.div`
   }
 
   .game-info {
+    margin-top: 5rem;
     width: 20%;
     display: flex;
     flex-direction: column;
@@ -388,7 +423,7 @@ const StyledMainGame = styled.div`
       .message-view {
         border: 1px solid white;
         background: #fff;
-        flex: 1
+        flex: 1;
         padding: 10px;
 
         span {
@@ -405,7 +440,7 @@ const StyledMainGame = styled.div`
           border: none;
 
           ::placeholder {
-            color: #111
+            color: #111;
           }
         }
       }
@@ -425,7 +460,6 @@ const StyledMainGame = styled.div`
   }
 `;
 
-
 const mapStateToProps = state => {
   return {
     grid: state.grid.grid,
@@ -443,7 +477,8 @@ export default connect(
     makeHouseGrid,
     makeGraveyardGrid,
     moveThePlayer,
-    sendMessage
+    sendMessage,
+    doLogOut
   }
 )(MainGame);
 
