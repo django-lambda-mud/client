@@ -54,14 +54,11 @@ const grid = (state = initialState, action) => {
           tempArray.push(rooms[i]);
         }
       }
-const yeadddh = grid
-debugger
       const forest = createForest([]);
       let keepTrackOfCurrentForestPosition;
       for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
           if (grid[i][j].title === action.roomTitle) {
-            console.log("fotze")
             grid[i][j].start = true;
             keepTrackOfCurrentForestPosition = grid[i][j];
           } else {

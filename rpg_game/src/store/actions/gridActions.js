@@ -16,7 +16,7 @@ export const genericAction = (type, payload, roomTitle, players) => ({
   players
 });
 
-const url = "http://127.0.0.1:8000/api/adv";
+const url = "https://muddyapp.herokuapp.com/api/adv";
 
 export const sendMessage = payload => dispatch => {
   axios.post(`${url}/say`, payload);
@@ -31,6 +31,7 @@ export const makeForestGrid = () => dispatch => {
       currentPosition = res.data.title;
       const players = res.data.player;
       return axios.get(`${url}/rooms/`).then(res => {
+        debugger
         if (Number(currentPosition) < 99) {
           dispatch(
             genericAction(MAKE_FOREST_GRID, res.data.rooms, currentPosition, players)

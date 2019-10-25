@@ -1,9 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import img from "./images/atmosphere-blue-clouds-2531709.jpg";
-<<<<<<< HEAD
-import { connect } from "react-redux";
-=======
 import wood from "./images/wood.png";
 import street from "./images/street.png";
 // import createForest from "../Maps/Forest/ForestFunctions";
@@ -11,8 +8,6 @@ import createStreet from "../Maps/Street/StreetFunctions";
 import createHouse from "../Maps/House/HouseFunctions";
 import createGraveyard from "../Maps/Graveyard/GraveyardFunctions";
 import { connect } from "react-redux";
-import Pusher from "pusher-js";
->>>>>>> 432e32f9c3ea253b870d8597452272007cb4fd7d
 import Node from "../Node/Node";
 import {
   makeStreetGrid,
@@ -51,10 +46,7 @@ class MainGame extends React.Component {
 
   componentDidMount = () => {
     this.createForest();
-<<<<<<< HEAD
-=======
-  };
->>>>>>> 432e32f9c3ea253b870d8597452272007cb4fd7d
+  
 
     window.addEventListener("keydown", e => {
       this.handleKeyDown(e);
@@ -90,11 +82,7 @@ class MainGame extends React.Component {
     } else {
       this.setState({ text: e.target.value });
     }
-<<<<<<< HEAD
-  }
-=======
   };
->>>>>>> 432e32f9c3ea253b870d8597452272007cb4fd7d
 
   handleKeyDown = e => {
     switch (e.keyCode) {
@@ -275,29 +263,6 @@ class MainGame extends React.Component {
           </tbody>
         </table>
         <div className="game-info">
-<<<<<<< HEAD
-        <div className="room-info">
-        <p>Room {this.props.currentRoom ? this.props.currentRoom.title: ''}</p>
-        <h5><u>Roommates</u></h5>
-        <ul>
-        {this.props.currentRoom ? this.props.currentRoom.players.map((player, index) => {
-                  return <li key={index}>{player}</li>
-                }) : ''}
-                </ul>
-                </div>
-                <div className="chat-space">
-                <div className="message-view">
-                {this.state.chats ? this.state.chats.map((chat, index) => {
-                    return <div key={index}><span>{chat.username}:</span> <span>{chat.message}</span></div>
-                  }): ''}
-                </div>
-                <div className="input-field">
-                <form>
-                <input value={this.state.text} onChange={this.handleTextChange} onKeyDown={this.handleTextChange}/>
-                </form>
-                </div>
-              </div>
-=======
           <div className="room-info">
             <p>
               Room {this.props.currentRoom ? this.props.currentRoom.title : ""}
@@ -337,7 +302,6 @@ class MainGame extends React.Component {
               </form>
             </div>
           </div>
->>>>>>> 432e32f9c3ea253b870d8597452272007cb4fd7d
         </div>
       </StyledMainGame>
     );
@@ -406,15 +370,12 @@ const StyledMainGame = styled.div`
         margin-top: 20px;
         input {
           padding: 5px;
-<<<<<<< HEAD
-=======
           width: 100%;
           border: none;
 
           ::placeholder {
             color: #111;
           }
->>>>>>> 432e32f9c3ea253b870d8597452272007cb4fd7d
         }
         button {
           padding: 5px;
