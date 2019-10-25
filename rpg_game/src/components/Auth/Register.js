@@ -74,6 +74,12 @@ class Register extends React.Component {
               placeholder="Username.."
               type="text"
             />
+            {signUpError && signUpError.username &&
+              signUpError.username.map(e => (
+                <p key={e} className="error">
+                  {e}
+                </p>
+              ))}
             <input
               name="password1"
               type="password"
