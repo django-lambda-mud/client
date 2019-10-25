@@ -32,7 +32,7 @@ export const doLogIn = (user, history ) => dispatch => {
     })
     .catch(error => {
        
-      let { errorMessage } = error.response.data;
+      let errorMessage = error.response.data;
       dispatch(genericAction(LOGIN_ERROR, errorMessage));
     })
     .finally(() => dispatch(genericAction(LOADING_USER, false)));
@@ -52,8 +52,7 @@ export const doSignUp = (user, history) => dispatch => {
       history.push("/character")
     })
     .catch(error => {
-       
-      let { errorMessage } = error.response.data;
+      let errorMessage = error.response.data;
       dispatch(genericAction(SIGNUP_ERROR, errorMessage));
     })
     .finally(() => dispatch(genericAction(LOADING_USER, false)));
