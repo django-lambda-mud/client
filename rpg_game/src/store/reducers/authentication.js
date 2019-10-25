@@ -1,8 +1,6 @@
 import * as types from '../actions/authenticationActions';
 
 const initialState = {
-  user: {},
-  userId: null,
   loadingUser: false,
   loginError: undefined,
   signUpError: undefined
