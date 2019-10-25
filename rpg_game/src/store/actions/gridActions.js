@@ -25,7 +25,8 @@ export const sendMessage = payload => dispatch => {
 export const makeForestGrid = () => dispatch => {
   let currentPosition;
   axiosWithAuth().get(`${url}/init/`)
-    .then(res => {
+  .then(res => {
+    dispatch(genericAction(ROOM_INFO, res.data))
       debugger
       currentPosition = res.data.title;
       const players = res.data.player;
