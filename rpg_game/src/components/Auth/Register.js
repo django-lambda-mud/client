@@ -1,10 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import { doSignUp } from "../../store/actions/authenticationActions";
-import {Link } from "react-router-dom";
-import img from '../../assets/atmosphere-blue-clouds-2531709.jpg'
-import logo from '../../assets/M.svg'
-import styled from 'styled-components'
+import { Link } from "react-router-dom";
+import img from "../../assets/atmosphere-blue-clouds-2531709.jpg";
+import logo from "../../assets/M.svg";
+import styled from "styled-components";
 
 class Register extends React.Component {
   constructor(props) {
@@ -12,11 +12,20 @@ class Register extends React.Component {
     this.state = {
       username: "",
       password1: "",
-      password2: ""
+      password2: "",
+      error: ""
     };
   }
 
   handleChange = e => {
+    if (this.state.username && this.state.password1 && this.state.password2)
+      this.setState({
+        error: ""
+      });
+    else
+      this.setState({
+        error: "Please fill in all fields"
+      });
     this.setState({
       [e.target.name]: e.target.value
     });
@@ -33,20 +42,31 @@ class Register extends React.Component {
       this.props.doSignUp(credentials, this.props.history);
 
       this.setState({
-        password1: null,
-        password2: null,
-        username: null
+        password1: "",
+        password2: "",
+        username: "",
+        error: ""
+      });
+    } else {
+      this.setState({
+        error: "Please fill in all fields"
       });
     }
   };
 
   render() {
+    const { loadingUser, signUpError } = this.props;
     return (
       <RegisterWrapper>
         <div className="register">
-          
           <div className="inputs">
             <img src={logo} alt="logo"></img>
+            {signUpError && signUpError.non_field_errors &&
+              signUpError.non_field_errors.map(e => (
+                <p key={e} className="error">
+                  {e}
+                </p>
+              ))}
             <input
               name="username"
               onChange={this.handleChange}
@@ -54,6 +74,12 @@ class Register extends React.Component {
               placeholder="Username.."
               type="text"
             />
+            {signUpError && signUpError.username &&
+              signUpError.username.map(e => (
+                <p key={e} className="error">
+                  {e}
+                </p>
+              ))}
             <input
               name="password1"
               type="password"
@@ -61,6 +87,12 @@ class Register extends React.Component {
               value={this.state.password1}
               placeholder="Password.."
             />
+            {signUpError && signUpError.password1 &&
+              signUpError.password1.map(e => (
+                <p key={e} className="error">
+                  {e}
+                </p>
+              ))}
             <input
               name="password2"
               type="password"
@@ -68,8 +100,20 @@ class Register extends React.Component {
               value={this.state.password2}
               placeholder="Verify Password"
             />
-            <button onClick={this.register}>Get Started</button>
-            <p>Already have an account?</p> <Link to="/"><span>Login Here</span></Link>
+            {signUpError && signUpError.password2 &&
+              signUpError.password2.map(e => (
+                <p key={e} className="error">
+                  {e}
+                </p>
+              ))}
+            {this.state.error && <p className="error">{this.state.error}</p>}
+            <button onClick={this.register}>
+              {loadingUser ? "Getting Started" : "Get Started"}
+            </button>
+            <p>Already have an account?</p>{" "}
+            <Link to="/">
+              <span>Login Here</span>
+            </Link>
           </div>
         </div>
       </RegisterWrapper>
@@ -103,7 +147,7 @@ const RegisterWrapper = styled.div`
       input {
         margin: auto;
         width: 50%;
-        margin-top: 1.0rem;
+        margin-top: 1rem;
         border: none;
         background-color: #515d8c61;
         padding: 12px;
@@ -111,7 +155,7 @@ const RegisterWrapper = styled.div`
         font-size: 13px;
         padding-left: 20px;
         font-weight: bold;
-        font-family: 'Antic', sans-serif;
+        font-family: "Antic", sans-serif;
 
         ::placeholder {
           color: #e1e2e6;
@@ -125,7 +169,7 @@ const RegisterWrapper = styled.div`
         margin-top: 80px;
         border: none;
         border-radius: 50px;
-        background-color: #020011
+        background-color: #020011;
         padding: 15px;
         font-size: 13px;
         color: #e1e2e6;
@@ -147,13 +191,19 @@ const RegisterWrapper = styled.div`
           color: #d6cace;
         }
       }
+
+      .error {
+        color: red;
+        text-align: center;
+      }
     }
   }
 `;
 
 const mapStateToProps = state => {
   return {
-    loadingUser: state.authentication.loadingUser
+    loadingUser: state.authentication.loadingUser,
+    signUpError: state.authentication.signUpError
   };
 };
 
