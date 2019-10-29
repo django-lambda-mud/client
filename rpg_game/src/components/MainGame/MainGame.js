@@ -8,7 +8,6 @@ import createStreet from "../Maps/Street/StreetFunctions";
 import createHouse from "../Maps/House/HouseFunctions";
 import createGraveyard from "../Maps/Graveyard/GraveyardFunctions";
 import { connect } from "react-redux";
-import Pusher from "pusher-js";
 import Node from "../Node/Node";
 import {
   makeStreetGrid,
@@ -24,9 +23,9 @@ import characterTwo from "../Node/images/character_two.png";
 import characterThree from "../Node/images/character_three.png";
 import characterFour from "../Node/images/character_four.png";
 import characterFive from "../Node/images/character_five.png";
+import Pusher from 'pusher-js';
 
 // eslint-disable-next-line
-let playerPosition;
 
 const pusher = new Pusher("f2df1cd773bc785afe1e", {
   cluster: "eu",
@@ -45,11 +44,10 @@ class MainGame extends React.Component {
     };
   }
 
-  componentWillMount = () => {
-    this.createForest();
-  };
-
   componentDidMount = () => {
+    this.createForest();
+  
+
     window.addEventListener("keydown", e => {
       this.handleKeyDown(e);
     });
@@ -94,30 +92,18 @@ class MainGame extends React.Component {
           const positionDown = this.props.grid[this.props.playerPosition.i + 1][
             this.props.playerPosition.j
           ];
-          // if (positionDown.toForest) {
-          //   this.createForest();
-          // }
-          // if (positionDown.toHouse) {
-          //   this.createHouse();
-          // }
-          // if (positionDown.toGraveyard) {
-          //   this.createGraveyard();
-          // }
-          // if (positionDown.exitStreet) {
-          //   this.createStreet();
-          // }
           if (
             this.props.playerPosition.s_to !== 0 &&
             !positionDown.treeOne &&
             !positionDown.treeTwo &&
-            !positionDown.treeThree
+            !positionDown.treeThree &&
+            !positionDown.skeleton &&
+            !positionDown.grave &&
+            !positionDown.goldOne &&
+            !positionDown.goldStatue &&
+            !positionDown.darkTree
           ) {
-            const newGrid = this.movePlayer(
-              this.props.grid,
-              this.props.playerPosition.i + 1,
-              this.props.playerPosition.j
-            );
-            this.props.moveThePlayer(newGrid, positionDown, "s");
+            this.props.moveThePlayer("s");
           }
           return;
         }
@@ -128,21 +114,18 @@ class MainGame extends React.Component {
           const positionLeft = this.props.grid[this.props.playerPosition.i][
             this.props.playerPosition.j - 1
           ];
-          // if (positionLeft.toForest) {
-          //   this.createForest();
-          // }
           if (
             this.props.playerPosition.w_to !== 0 && // .neighbors.includes(positionLeft) was old code
             !positionLeft.treeOne &&
             !positionLeft.treeTwo &&
-            !positionLeft.treeThree
+            !positionLeft.treeThree &&
+            !positionLeft.skeleton &&
+            !positionLeft.grave &&
+            !positionLeft.goldOne &&
+            !positionLeft.goldStatue &&
+            !positionLeft.darkTree
           ) {
-            const newGrid = this.movePlayer(
-              this.props.grid,
-              this.props.playerPosition.i,
-              this.props.playerPosition.j - 1
-            );
-            this.props.moveThePlayer(newGrid, positionLeft, "w");
+            this.props.moveThePlayer("w");
           }
           return;
         }
@@ -153,27 +136,18 @@ class MainGame extends React.Component {
           const positionRight = this.props.grid[this.props.playerPosition.i][
             this.props.playerPosition.j + 1
           ];
-          // if (positionRight.toForest) {
-          //   this.createForest();
-          // }
-          // if (positionRight.toStreet) {
-          //   this.createStreet();
-          // }
-          // if (positionRight.toGraveyard) {
-          //   this.createGraveyard();
-          // }
           if (
             this.props.playerPosition.e_to !== 0 &&
             !positionRight.treeOne &&
             !positionRight.treeTwo &&
-            !positionRight.treeThree
+            !positionRight.treeThree &&
+            !positionRight.skeleton &&
+            !positionRight.grave &&
+            !positionRight.goldOne &&
+            !positionRight.goldStatue &&
+            !positionRight.darkTree
           ) {
-            const newGrid = this.movePlayer(
-              this.props.grid,
-              this.props.playerPosition.i,
-              this.props.playerPosition.j + 1
-            );
-            this.props.moveThePlayer(newGrid, positionRight, "e");
+            this.props.moveThePlayer("e");
           }
           return;
         }
@@ -184,21 +158,18 @@ class MainGame extends React.Component {
           const positionUp = this.props.grid[this.props.playerPosition.i - 1][
             this.props.playerPosition.j
           ];
-          // if (positionUp.toStreet) {
-          //   this.createStreet();
-          // }
           if (
             this.props.playerPosition.n_to !== 0 &&
             !positionUp.treeOne &&
             !positionUp.treeTwo &&
-            !positionUp.treeThree
+            !positionUp.treeThree &&
+            !positionUp.skeleton &&
+            !positionUp.grave &&
+            !positionUp.goldOne &&
+            !positionUp.goldStatue &&
+            !positionUp.darkTree
           ) {
-            const newGrid = this.movePlayer(
-              this.props.grid,
-              this.props.playerPosition.i - 1,
-              this.props.playerPosition.j
-            );
-            this.props.moveThePlayer(newGrid, positionUp, "n");
+            this.props.moveThePlayer("n");
           }
           return;
         }
@@ -213,27 +184,15 @@ class MainGame extends React.Component {
   };
 
   createStreet = () => {
-    const streetGrid = createStreet([]);
-    this.props.makeStreetGrid(streetGrid);
-    grid = streetGrid;
-    playerPosition = grid[0][0];
-    document.querySelector(".grid").style.backgroundImage = `url(${street})`;
+    this.props.makeStreetGrid();
   };
 
   createHouse = () => {
-    const houseGrid = createHouse([]);
-    this.props.makeHouseGrid(houseGrid);
-    grid = houseGrid;
-    playerPosition = grid[0][0];
-    document.querySelector(".grid").style.backgroundImage = `url(${wood})`;
+    this.props.makeHouseGrid();
   };
 
   createGraveyard = () => {
-    const graveyardGrid = createGraveyard([]);
-    this.props.makeGraveyardGrid(graveyardGrid);
-    grid = graveyardGrid;
-    playerPosition = grid[0][0];
-    document.querySelector(".grid").style.backgroundImage = `url(${img})`;
+    this.props.makeGraveyardGrid();
   };
 
   movePlayer = (grid, i, j) => {
@@ -245,9 +204,6 @@ class MainGame extends React.Component {
   };
 
   render() {
-    if (this.props.grid) {
-      // console.log(this.props.grid);
-    }
     return (
       <StyledMainGame>
         <button onClick={this.props.doLogOut}>Logout</button>
@@ -379,6 +335,7 @@ const StyledMainGame = styled.div`
     margin: 20px;
     width: 70%;
     box-shadow: 0px 1.87781px 6.25935px rgba(0, 0, 0, 2.06);
+    
   }
 
   .game-info {
@@ -395,7 +352,36 @@ const StyledMainGame = styled.div`
       height: auto;
       margin-bottom: 30px;
       box-shadow: 0px 1.87781px 6.25935px rgba(0, 0, 0, 2.06);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px;
+      .message-view {
+        border: 1px solid white;
+        background: #fff;
+        flex: 1;
+        padding: 10px;
+        span {
+          color: black;
+          font-size: 12px;
+        }
+      }
+      .input-field {
+        margin-top: 20px;
+        input {
+          padding: 5px;
+          width: 100%;
+          border: none;
 
+          ::placeholder {
+            color: #111;
+          }
+        }
+        button {
+          padding: 5px;
+        }
+      }
+      
       h5 {
         margin-top: 30px;
         color: #fff;
@@ -415,35 +401,6 @@ const StyledMainGame = styled.div`
       min-height: 250px;
       height: auto;
       box-shadow: 0px 1.87781px 6.25935px rgba(0, 0, 0, 2.06);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 10px;
-
-      .message-view {
-        border: 1px solid white;
-        background: #fff;
-        flex: 1;
-        padding: 10px;
-
-        span {
-          color: black;
-          font-size: 12px;
-        }
-      }
-
-      .input-field {
-        margin-top: 20px;
-        input {
-          padding: 5px;
-          width: 100%;
-          border: none;
-
-          ::placeholder {
-            color: #111;
-          }
-        }
-      }
     }
   }
 
@@ -484,4 +441,3 @@ export default connect(
 
 const rows = 10;
 const cols = 10;
-let grid;

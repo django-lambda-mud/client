@@ -27,6 +27,7 @@ export const doLogIn = (user, history ) => dispatch => {
       history.push("/character")
     })
     .catch(error => {
+      debugger
        
       let errorMessage = error.response.data;
       dispatch(genericAction(LOGIN_ERROR, errorMessage));
@@ -40,6 +41,7 @@ export const doSignUp = (user, history) => dispatch => {
   axios
     .post(`${appURL}/api/registration/`, user)
     .then(response => {
+      debugger
        
       const { key } = response.data;
       localStorage.setItem("token", key);
